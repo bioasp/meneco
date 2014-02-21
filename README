@@ -1,0 +1,30 @@
+Installation 
+============
+
+
+You can install meneco by running::
+
+	$ pip install meneco
+
+
+
+
+Usage
+=====
+
+Typical usage is::
+	
+	$ meneco.py draftnetwork.sbml repairnetwork.sbml seeds.sbml targets.sbml
+
+
+Samples
+=======
+
+Sample files for the reconstruction of ectocarpus are available here:
+      ectocyc.sbml_ metacyc_16-5.sbml_ seeds.sbml_ targets.sbml_
+
+.. _ectocyc.sbml: http://www.cs.uni-potsdam.de/~sthiele/bioasp/downloads/samples/ectodata/ectocyc.sbml
+.. _metacyc_16-5.sbml: http://www.cs.uni-potsdam.de/~sthiele/bioasp/downloads/samples/ectodata/metacyc_16-5.sbml
+.. _seeds.sbml: http://www.cs.uni-potsdam.de/~sthiele/bioasp/downloads/samples/ectodata/seeds.sbml
+.. _targets.sbml: http://www.cs.uni-potsdam.de/~sthiele/bioasp/downloads/samples/ectodata/targets.sbml
+
