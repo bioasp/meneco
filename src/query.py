@@ -125,16 +125,19 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)       
     ireactions = compute_ireactions(instance)
     instance = instance.union(ireactions)
-    instance_f= instance.to_file()
+    instance_f= instance.to_file('huhu.lp')
     #prg = [minimal_completion_prg, heuristic_prg, instance_f]
     #co="--heu=domain"
     #solver = GringoHClaspOpt(clasp_options=co)
     prg = [minimal_completion_prg, instance_f]
     
-    solver = GringoUnClasp()
+    #solver = GringoUnClasp()
+    
+    co="--opt-strategy=5"
+    solver = GringoClasp(clasp_options=co)
         
     optimum = solver.run(prg,collapseTerms=True, collapseAtoms=False)
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return optimum
     
    
@@ -155,6 +158,8 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
     prg = [minimal_completion_wb_prg , instance_f ]
     #options='-t 2 --enum-mode cautious --opt-all='+str(optimum)
     options='--configuration jumpy --enum-mode cautious --opt-all='+str(optimum)
+    options='--configuration jumpy --enum-mode cautious --opt-mode=optNgit pull'
+    
     solver = GringoClasp(clasp_options=options)
     models = solver.run(prg,nmodels=0,collapseTerms=True, collapseAtoms=False)
     
@@ -175,7 +180,9 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
     
     prg = [minimal_completion_wb_prg , instance.to_file() ]
     #options='-t 2 --enum-mode brave --opt-all='+str(optimum)
-    options='--configuration jumpy --enum-mode brave --opt-all='+str(optimum)
+    #options='--configuration jumpy --enum-mode brave --opt-all='+str(optimum)
+    options='--configuration jumpy --enum-mode brave --opt-mode=optN'
+
     solver = GringoClasp(clasp_options=options)
     models = solver.run(prg,nmodels=0,collapseTerms=True, collapseAtoms=False)
     os.unlink(prg[1])
@@ -195,7 +202,8 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     instance = map_reaction_ids(instance.union(ireactions), dict)    
     
     prg = [minimal_completion_wb_prg , instance.to_file() ]
-    options='--configuration jumpy --opt-all='+str(optimum)
+    #options='--configuration jumpy --opt-all='+str(optimum)
+    options='--configuration jumpy --opt-mode=optN'    
     solver = GringoClasp(clasp_options=options)
     models = solver.run(prg,nmodels,collapseTerms=True, collapseAtoms=False)
     os.unlink(prg[1])
@@ -215,7 +223,9 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
     instance_f = instance.to_file()
     
     prg = [completion_prg, instance_f]
-    options='--enum-mode cautious --opt-ignore '
+    #options='--enum-mode cautious --opt-ignore '
+    options='--enum-mode cautious --opt-mode=ignore '
+
     solver = GringoClasp(clasp_options=options)
     models = solver.run(prg,nmodels=0,collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)

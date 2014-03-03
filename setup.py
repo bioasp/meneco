@@ -33,7 +33,7 @@ class install(_install):
                          
 setup(cmdclass={'install': install},
       name='meneco',
-      version='1.3.2',
+      version='1.4',
       url='http://pypi.python.org/pypi/meneco/',
       license='GPLv3+',
       description='Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
@@ -45,6 +45,6 @@ setup(cmdclass={'install': install},
       package_data = {'__meneco__' : ['encodings/*.lp']},
       scripts = ['meneco.py'],
       install_requires=[
-        "pyasp >= 1.2.1"
+        "pyasp >= 1.3"
       ]
 )
