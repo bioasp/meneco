@@ -1,0 +1,40 @@
+Metadata-Version: 1.0
+Name: meneco
+Version: 1.4dev
+Summary: Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.
+Home-page: http://pypi.python.org/pypi/meneco/
+Author: Sven Thiele
+Author-email: sthiele78@gmail.com
+License: GPLv3+
+Description: Installation 
+        ============
+        
+        
+        You can install meneco by running::
+        
+        	$ pip install meneco
+        
+        
+        
+        
+        Usage
+        =====
+        
+        Typical usage is::
+        	
+        	$ meneco.py draftnetwork.sbml repairnetwork.sbml seeds.sbml targets.sbml
+        
+        
+        Samples
+        =======
+        
+        Sample files for the reconstruction of ectocarpus are available here:
+              ectocyc.sbml_ metacyc_16-5.sbml_ seeds.sbml_ targets.sbml_
+        
+        .. _ectocyc.sbml: http://bioasp.github.io/downloads/samples/ectodata/ectocyc.sbml
+        .. _metacyc_16-5.sbml: http://bioasp.github.io/downloads/samples/ectodata/metacyc_16-5.sbml
+        .. _seeds.sbml: http://bioasp.github.io/downloads/samples/ectodata/seeds.sbml
+        .. _targets.sbml: http://bioasp.github.io/downloads/samples/ectodata/targets.sbml
+        
+        
+Platform: UNKNOWN

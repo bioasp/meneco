@@ -125,7 +125,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)       
     ireactions = compute_ireactions(instance)
     instance = instance.union(ireactions)
-    instance_f= instance.to_file('huhu.lp')
+    instance_f= instance.to_file()
     #prg = [minimal_completion_prg, heuristic_prg, instance_f]
     #co="--heu=domain"
     #solver = GringoHClaspOpt(clasp_options=co)
@@ -137,7 +137,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     solver = GringoClasp(clasp_options=co)
         
     optimum = solver.run(prg,collapseTerms=True, collapseAtoms=False)
-    #os.unlink(instance_f)
+    os.unlink(instance_f)
     return optimum
     
    

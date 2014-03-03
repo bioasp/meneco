@@ -8,6 +8,7 @@
 
 % find minimal set of xreactions such that xscope contains targets in pscope
 
+
 % what is producible by the original network
 
   dscope(M) :- seed(M).
@@ -28,7 +29,6 @@
   pscope(M) :- reactant(M,R,N), reaction(R,N), reversible(R),
                pscope(M2) : product(M2,R,N).
 
-
 % what are the interesting reactions
 % ireactions reactions are now defined in ireactions.lp
 
@@ -45,7 +45,6 @@
 
   oreaction(R,N) :- reaction(R,N), not draft(N), xscope(M) : reactant(M,R,N).
   oreaction(R,N) :- xscope(M) : product(M,R,N), reaction(R,N), reversible(R), not draft(N).
-
 
   :- xreaction(R,N), not oreaction(R,N).
 
