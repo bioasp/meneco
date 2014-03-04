@@ -109,9 +109,6 @@
 
 % optimizations
 
-  ireaction(R) :- ireaction(R,N).
-
-%#maximize [ xreaction(R)  : ireaction(R) : not reaction(R,N) : draft(N) : value(R,C) = C].
 #minimize [ not false= 0, xreaction(R,N)  : ireaction(R,N) ].
 
 #hide.
