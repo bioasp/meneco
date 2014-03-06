@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
-from pyasp.asp import *
 import argparse
+import sys
+from pyasp.asp import *
 from __meneco__ import query, utils, sbml
 
 if __name__ == '__main__':
@@ -45,21 +46,25 @@ if __name__ == '__main__':
     targets_sbml =  args.targets
     
     print 'Reading draft network from ',draft_sbml,'...',
+    sys.stdout.flush()
     draftnet = sbml.readSBMLnetwork(draft_sbml, 'draft')
     print 'done.'
     #draftnet.to_file("draftnet.lp")
     
     print 'Reading seeds from ',seeds_sbml,'...',
+    sys.stdout.flush()
     seeds = sbml.readSBMLseeds(seeds_sbml)
     print 'done.'
     #seeds.to_file("seeds.lp")
         
     print 'Reading targets from ',targets_sbml,'...',
+    sys.stdout.flush()
     targets = sbml.readSBMLtargets(targets_sbml)
     print 'done.'
     #targets.to_file("targets.lp")
 
     print '\nChecking draftnet for unproducible targets ...',
+    sys.stdout.flush()
     model = query.get_unproducible(draftnet, targets, seeds)
     print 'done.'
     print ' ',len(model),'unproducible targets:'
@@ -71,6 +76,7 @@ if __name__ == '__main__':
       unproducible_targets = unproducible_targets.union(t)
       
     print '\nReading repair network from ',repair_sbml,'...',
+    sys.stdout.flush()
     repairnet = sbml.readSBMLnetwork(repair_sbml, 'repairnet')
     print 'done.'
     #repairnet.to_file("repairnet.lp")
@@ -79,6 +85,7 @@ if __name__ == '__main__':
     all_reactions = draftnet
     all_reactions = all_reactions.union(repairnet)
     print '\nChecking draftnet + repairnet for unproducible targets ...',
+    sys.stdout.flush()
     model = query.get_unproducible(all_reactions, seeds, targets)
     print 'done.'
     print '  still',len(model),'unproducible targets:'
@@ -105,6 +112,7 @@ if __name__ == '__main__':
       single_target = TermSet()
       single_target.add(t)
       print '\nComputing essential reactions for',t,'...',
+      sys.stdout.flush()
       essentials =  query.get_intersection_of_completions(draftnet, repairnet, seeds, single_target)
       print 'done.'
       print ' ',len(essentials), 'essential reactions found:'
@@ -124,6 +132,7 @@ if __name__ == '__main__':
     #seeds.to_file("seeds.lp")
     
     print '\nComputing one minimal completion to produce all targets ...',
+    sys.stdout.flush()
     models =  query.get_minimal_completion_size(draftnet, repairnet, seeds, reconstructable_targets)
     print 'done.'
     optimum = models[0].score[0]
@@ -131,17 +140,20 @@ if __name__ == '__main__':
 
     
     print '\nComputing common reactions in all completion with size',optimum,'...',
+    sys.stdout.flush()
     model =  query.get_intersection_of_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets,  optimum)
     print 'done.'
     utils.print_met(model.to_list())
     
     print '\nComputing union of reactions from all completion with size',optimum,'...',
+    sys.stdout.flush()
     model =  query.get_union_of_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets, optimum)
     print 'done.'
     utils.print_met(model.to_list())
 
     if args.enumerate :
       print '\nComputing all completions with size',optimum,'...',
+      sys.stdout.flush()
       models =  query.get_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets, optimum)
       print 'done.'
       count = 1
