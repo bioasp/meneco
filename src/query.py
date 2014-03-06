@@ -127,12 +127,10 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     ireactions = compute_ireactions(instance)
     instance = instance.union(ireactions)
     instance_f= instance.to_file()
-    #prg = [minimal_completion_prg, heuristic_prg, instance_f]
-    #co="--heu=domain"
-    #solver = GringoHClasp(clasp_options=co)
+
     prg = [minimal_completion_prg, instance_f]
     
-    co="--opt-strategy=5"
+    co="--configuration=jumpy --opt-strategy=5"
     solver = GringoClasp(clasp_options=co)
         
     optimum = solver.run(prg, collapseTerms=True, collapseAtoms=False)
@@ -141,74 +139,63 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     
    
 def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
+  
     draftfact = String2TermSet('draft("draft")')
-    ubfact = String2TermSet('ub('+str(optimum)+')')
-    lbfact = String2TermSet('lb('+str(optimum)+')')
-    instance = draft.union(draftfact).union(ubfact).union(lbfact).union(repairnet).union(targets).union(seeds)
-    
+    instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)       
     ireactions = compute_ireactions(instance)
-    dict, revdict = get_mapping_ireaction(ireactions)
-    instance = map_reaction_ids(instance.union(ireactions), dict)
-    instance_f = instance.to_file()
-    #instance.to_file("b0sp_0613_instance.lp")
-    #print revdict
-    #exit()
-    prg = [minimal_completion_wb_prg , instance_f ]
-    options='--configuration jumpy --enum-mode cautious --opt-mode=optN --opt-bound='+str(optimum)
+    instance = instance.union(ireactions)
+    instance_f= instance.to_file()
+
+    prg = [minimal_completion_prg, instance_f]
+    
+    options='--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN --opt-bound='+str(optimum)
     
     solver = GringoClasp(clasp_options=options)
-    models = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     
+    intersec = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
-    solution = unmap_reaction_ids(models[0], revdict)
-    return solution
-  
+    return intersec[0]
+    
 
 def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
+  
     draftfact = String2TermSet('draft("draft")')
-    ubfact = String2TermSet('ub('+str(optimum)+')')
-    lbfact = String2TermSet('lb('+str(optimum)+')')
-    instance = draft.union(draftfact).union(ubfact).union(lbfact).union(repairnet).union(targets).union(seeds)
-    
+    instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)       
     ireactions = compute_ireactions(instance)
-    dict, revdict = get_mapping_ireaction(ireactions)
-    instance = map_reaction_ids(instance.union(ireactions), dict)
+    instance = instance.union(ireactions)
+    instance_f= instance.to_file()
+
+    prg = [minimal_completion_prg, instance_f]
     
-    prg = [minimal_completion_wb_prg , instance.to_file() ]
-    options='--configuration jumpy --enum-mode brave --opt-mode=optN --opt-bound='+str(optimum)
+    options='--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN --opt-bound='+str(optimum)
 
     solver = GringoClasp(clasp_options=options)
-    models = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    os.unlink(prg[1])
     
-    solution = unmap_reaction_ids(models[0], revdict)
-    return solution    
+    union = solver.run(prg, collapseTerms=True, collapseAtoms=False)
+    os.unlink(instance_f)
+    return union[0]  
   
   
 def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0):
+  
     draftfact = String2TermSet('draft("draft")')
-    ubfact = String2TermSet('ub('+str(optimum)+')')
-    lbfact = String2TermSet('lb('+str(optimum)+')')
-    instance = draft.union(draftfact).union(ubfact).union(lbfact).union(repairnet).union(targets).union(seeds)
-    
+    instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)       
     ireactions = compute_ireactions(instance)
-    dict, revdict = get_mapping_ireaction(ireactions)
-    instance = map_reaction_ids(instance.union(ireactions), dict)    
+    instance = instance.union(ireactions)
+    instance_f= instance.to_file()
+
+    prg = [minimal_completion_prg, instance_f]
     
-    prg = [minimal_completion_wb_prg , instance.to_file() ]
-    options= str(nmodels)+' --configuration jumpy --opt-mode=optN --opt-bound='+str(optimum)    
+    options= str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN --opt-bound='+str(optimum)    
     solver = GringoClasp(clasp_options=options)
     models = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    os.unlink(prg[1])
-    
-    solutions= []
-    for m in models :
-       s = unmap_reaction_ids(m, revdict)
-       solutions.append(s)
-    return solutions
+
+    os.unlink(instance_f)
+    return models  
 
 
 def get_intersection_of_completions(draft, repairnet, seeds, targets):
+  
     draftfact = String2TermSet('draft("draft")')
     instance = draft.union(draftfact).union(repairnet).union(targets).union(seeds)
     ireactions = compute_ireactions(instance)
