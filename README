@@ -7,14 +7,27 @@ You can install meneco by running::
 	$ pip install meneco
 
 
-
-
 Usage
 =====
 
 Typical usage is::
 	
 	$ meneco.py draftnetwork.sbml repairnetwork.sbml seeds.sbml targets.sbml
+	
+For more options you can ask for help as follows:
+
+	$ meneco --h
+	    usage: meneco.py [-h] [--enumerate] draftnetwork repairnetwork seeds targets
+	
+	    positional arguments:
+	      draftnetwork   metabolic network in SBML format
+	      repairnetwork  metabolic network in SBML format
+	      seeds          seeds in SBML format
+	      targets        targets in SBML format
+	
+	    optional arguments:
+	      -h, --help     show this help message and exit
+	      --enumerate    enumerate all minimal completions
 
 
 Samples
