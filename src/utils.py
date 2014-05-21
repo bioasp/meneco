@@ -30,3 +30,4 @@ def print_met(predictions) :
   for p in predictions: 
     if p.pred() == "xreaction" : print '  '+str(p.arg(0))
     if p.pred() == "unproducible_target" : print '  '+str(p.arg(0))
+    if p.pred() == "target" : print '  '+str(p.arg(0))
