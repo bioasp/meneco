@@ -33,7 +33,7 @@ class install(_install):
                          
 setup(cmdclass={'install': install},
       name='meneco',
-      version='1.4.1',
+      version='1.4.2',
       url='http://pypi.python.org/pypi/meneco/',
       license='GPLv3+',
       description='Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
