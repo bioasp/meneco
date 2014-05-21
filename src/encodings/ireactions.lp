@@ -13,7 +13,7 @@
 
   samenames(R,N1,N2) :- reaction(R,N1),draft(N1),N1!=N2,reaction(R,N2).
   samereactants(R) :- samenames(R,N1,N2), reactant(M2,R,N1): reactant(M2,R,N2).
-  sameproducts(R) :- samenames(R,N1,N2), products(M2,R,N1): products(M2,R,N2).
+  sameproducts(R) :- samenames(R,N1,N2), product(M2,R,N1): product(M2,R,N2).
   same(R):- samenames(R,N1,N2), samereactants(R), sameproducts(R), reversible(R,N1), reversible(R,N2).
   same(R):- samenames(R,N1,N2), samereactants(R), sameproducts(R), not reversible(R,N1), not reversible(R,N2).
 
