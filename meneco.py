@@ -28,137 +28,137 @@ if __name__ == '__main__':
     parser.add_argument("draftnetwork",
                         help="metabolic network in SBML format")
     parser.add_argument("repairnetwork",
-                        help="metabolic network in SBML format")     
+                        help="metabolic network in SBML format")
     parser.add_argument("seeds",
-                        help="seeds in SBML format") 
+                        help="seeds in SBML format")
     parser.add_argument("targets",
-                        help="targets in SBML format") 
+                        help="targets in SBML format")
 
-    parser.add_argument('--enumerate', 
-			help="enumerate all minimal completions",
-			action="store_true")
-    
-    args = parser.parse_args()        
-        
+    parser.add_argument('--enumerate',
+                        help="enumerate all minimal completions",
+                        action="store_true")
+
+    args = parser.parse_args()
+
     draft_sbml = args.draftnetwork
     repair_sbml = args.repairnetwork
     seeds_sbml = args.seeds
     targets_sbml =  args.targets
-    
-    print 'Reading draft network from ',draft_sbml,'...',
+
+    print('Reading draft network from ',draft_sbml,'...',end='')
     sys.stdout.flush()
     draftnet = sbml.readSBMLnetwork(draft_sbml, 'draft')
-    print 'done.'
+    print('done.')
     #draftnet.to_file("draftnet.lp")
-    
-    print 'Reading seeds from ',seeds_sbml,'...',
+
+    print('Reading seeds from ',seeds_sbml,'...',end='')
     sys.stdout.flush()
     seeds = sbml.readSBMLseeds(seeds_sbml)
-    print 'done.'
+    print('done.')
     #seeds.to_file("seeds.lp")
-        
-    print 'Reading targets from ',targets_sbml,'...',
+
+    print('Reading targets from ',targets_sbml,'...',end='')
     sys.stdout.flush()
     targets = sbml.readSBMLtargets(targets_sbml)
-    print 'done.'
+    print('done.')
     #targets.to_file("targets.lp")
 
-    print '\nChecking draftnet for unproducible targets ...',
+    print('\nChecking draftnet for unproducible targets ...',end='')
     sys.stdout.flush()
     model = query.get_unproducible(draftnet, targets, seeds)
-    print 'done.'
-    print ' ',len(model),'unproducible targets:'
+    print('done.')
+    print(' ',len(model),'unproducible targets:')
     utils.print_met(model.to_list())
     unproducible_targets = TermSet()
     for a in model :
       target= str(a)[13:]
       t = String2TermSet(target)
-      unproducible_targets = unproducible_targets.union(t)
-      
-    print '\nReading repair network from ',repair_sbml,'...',
+      unproducible_targets = TermSet(unproducible_targets.union(t))
+
+    print('\nReading repair network from ',repair_sbml,'...',end='')
     sys.stdout.flush()
     repairnet = sbml.readSBMLnetwork(repair_sbml, 'repairnet')
-    print 'done.'
+    print('done.')
     #repairnet.to_file("repairnet.lp")
 
 
     all_reactions = draftnet
-    all_reactions = all_reactions.union(repairnet)
-    print '\nChecking draftnet + repairnet for unproducible targets ...',
+    all_reactions = TermSet(all_reactions.union(repairnet))
+    print('\nChecking draftnet + repairnet for unproducible targets ...',end='')
     sys.stdout.flush()
     model = query.get_unproducible(all_reactions, seeds, targets)
-    print 'done.'
-    print '  still',len(model),'unproducible targets:'
+    print('done.')
+    print('  still',len(model),'unproducible targets:')
     utils.print_met(model.to_list())
     never_producible = TermSet()
     for a in model :
       target= str(a)[13:]
       t = String2TermSet(target)
-      never_producible = never_producible.union(t)
+      never_producible = TermSet(never_producible.union(t))
 
     reconstructable_targets = TermSet()
     for t in unproducible_targets:
       if not (t in never_producible) :      reconstructable_targets.add(t)
-    print '\n ',len(reconstructable_targets),'targets to reconstruct:'
+    print('\n ',len(reconstructable_targets),'targets to reconstruct:')
     utils.print_met(reconstructable_targets)
 
     if len(reconstructable_targets)== 0 :
       utils.clean_up()
       quit()
-      
-      
+
+
     essential_reactions = TermSet()
     for t in reconstructable_targets:
       single_target = TermSet()
       single_target.add(t)
-      print '\nComputing essential reactions for',t,'...',
+      print('\nComputing essential reactions for',t,'...',end='')
       sys.stdout.flush()
       essentials =  query.get_intersection_of_completions(draftnet, repairnet, seeds, single_target)
-      print 'done.'
-      print ' ',len(essentials), 'essential reactions found:'
+      print('done.')
+      print(' ',len(essentials), 'essential reactions found:')
       utils.print_met(essentials.to_list())
-      essential_reactions = essential_reactions.union(essentials)
-    print '\n  Overall',len(essential_reactions), 'essential reactions found.'
+      essential_reactions = TermSet(essential_reactions.union(essentials))
+    print('\n  Overall',len(essential_reactions), 'essential reactions found.')
     utils.print_met(essential_reactions)
-    print '\n Add essential reactions to network.'
-    draftnet  = draftnet.union(essential_reactions) 
+    print('\n Add essential reactions to network.')
+    draftnet  = TermSet(draftnet.union(essential_reactions))
 
     utils.clean_up()
-    
-    
+
+
     #draftnet.to_file("draft.lp")
     #repairnet.to_file("repairnet.lp")
     #unproducible_targets.to_file("targets.lp")
     #seeds.to_file("seeds.lp")
-    
-    print '\nComputing one minimal completion to produce all targets ...',
+
+    print('\nComputing one minimal completion to produce all targets ...',end='')
     sys.stdout.flush()
     models =  query.get_minimal_completion_size(draftnet, repairnet, seeds, reconstructable_targets)
-    print 'done.'
+    print('done.')
     optimum = models[0].score[0]
     utils.print_met(models[0].to_list())
 
-    
-    print '\nComputing common reactions in all completion with size',optimum,'...',
+
+    print('\nComputing common reactions in all completion with size',optimum,'...',end='')
     sys.stdout.flush()
     model =  query.get_intersection_of_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets,  optimum)
-    print 'done.'
+    print('done.')
     utils.print_met(model.to_list())
-    
-    print '\nComputing union of reactions from all completion with size',optimum,'...',
+
+    print('\nComputing union of reactions from all completion with size',optimum,'...',end='')
     sys.stdout.flush()
     model =  query.get_union_of_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets, optimum)
-    print 'done.'
+    print('done.')
     utils.print_met(model.to_list())
 
     if args.enumerate :
-      print '\nComputing all completions with size',optimum,'...',
+      print('\nComputing all completions with size',optimum,'...',end='')
       sys.stdout.flush()
       models =  query.get_optimal_completions(draftnet, repairnet, seeds, reconstructable_targets, optimum)
-      print 'done.'
+      print('done.')
       count = 1
       for model in models:
-	print 'Completion '+str(count)+':'
-	count+=1
+        print('Completion '+str(count)+':')
+        count+=1
         utils.print_met(model.to_list())
 
