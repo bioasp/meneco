@@ -1,2 +1,3 @@
 include src/encodings/*.lp
-include *.txt
+include CHANGES.txt
+include README.rst

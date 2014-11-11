@@ -1,4 +1,4 @@
-# Copyright (c) 2012, Sven Thiele <sthiele78@gmail.com>
+# Copyright (c) 2014, Sven Thiele <sthiele78@gmail.com>
 #
 # This file is part of meneco.
 #
@@ -33,7 +33,7 @@ class install(_install):
                          
 setup(cmdclass={'install': install},
       name='meneco',
-      version='1.4.2',
+      version='1.4.3',
       url='http://bioasp.github.io/meneco/',
       license='GPLv3+',
       description='Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
@@ -45,6 +45,6 @@ setup(cmdclass={'install': install},
       package_data = {'__meneco__' : ['encodings/*.lp']},
       scripts = ['meneco.py'],
       install_requires=[
-        "pyasp == 1.3.3"
+        "pyasp == 1.4.0"
       ]
 )
