@@ -118,9 +118,9 @@ if __name__ == '__main__':
       print(' ',len(essentials), 'essential reactions found:')
       utils.print_met(essentials.to_list())
       essential_reactions = TermSet(essential_reactions.union(essentials))
-    print('\n  Overall',len(essential_reactions), 'essential reactions found.')
+    print('\nOverall',len(essential_reactions), 'essential reactions found.')
     utils.print_met(essential_reactions)
-    print('\n Add essential reactions to network.')
+    print('\nAdding essential reactions to network.')
     draftnet  = TermSet(draftnet.union(essential_reactions))
 
     utils.clean_up()
