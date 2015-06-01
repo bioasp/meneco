@@ -20,7 +20,7 @@ Typical usage is::
 	
 For more options you can ask for help as follows::
 
-	$ meneco --h
+	$ meneco.py --h
 	    usage: meneco.py [-h] [--enumerate] draftnetwork repairnetwork seeds targets
 	
 	    positional arguments:
