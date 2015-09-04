@@ -37,9 +37,7 @@ For more options you can ask for help as follows::
 Samples
 =======
 
-Sample files for the reconstruction of ectocarpus are available here::
-
-ectocyc.sbml_ metacyc_16-5.sbml_ seeds.sbml_ targets.sbml_
+Sample files for the reconstruction of ectocarpus are available here: ectocyc.sbml_, metacyc_16-5.sbml_, seeds.sbml_, targets.sbml_
 
 .. _ectocyc.sbml: http://bioasp.github.io/downloads/samples/ectodata/ectocyc.sbml
 .. _metacyc_16-5.sbml: http://bioasp.github.io/downloads/samples/ectodata/metacyc_16-5.sbml
