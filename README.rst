@@ -1,4 +1,4 @@
-Installation 
+Installation
 ============
 
 
@@ -15,23 +15,27 @@ Usage
 =====
 
 Typical usage is::
-	
-	$ meneco.py draftnetwork.sbml repairnetwork.sbml seeds.sbml targets.sbml
-	
+
+	$ meneco.py -d draftnetwork.sbml -r repairnetwork.sbml -s seeds.sbml -t targets.sbml
+
 For more options you can ask for help as follows::
 
 	$ meneco.py --h
-	    usage: meneco.py [-h] [--enumerate] draftnetwork repairnetwork seeds targets
-	
-	    positional arguments:
-	      draftnetwork   metabolic network in SBML format
-	      repairnetwork  metabolic network in SBML format
-	      seeds          seeds in SBML format
-	      targets        targets in SBML format
-	
-	    optional arguments:
-	      -h, --help     show this help message and exit
-	      --enumerate    enumerate all minimal completions
+	usage: meneco.py [-h] -d DRAFTNET [-r REPAIRNET] -s SEEDS -t TARGETS
+			 [--enumerate] [--menecheck]
+
+	optional arguments:
+	-h, --help            show this help message and exit
+	-d DRAFTNET, --draftnet DRAFTNET
+						metabolic network in SBML format
+	-r REPAIRNET, --repairnet REPAIRNET
+						metabolic network in SBML format
+	-s SEEDS, --seeds SEEDS
+						seeds in SBML format
+	-t TARGETS, --targets TARGETS
+						targets in SBML format
+	--enumerate           enumerate all minimal completions
+	--menecheck           test only the producibility of the targets
 
 
 Samples
@@ -43,4 +47,3 @@ Sample files for the reconstruction of ectocarpus are available here: ectocyc.sb
 .. _metacyc_16-5.sbml: http://bioasp.github.io/downloads/samples/ectodata/metacyc_16-5.sbml
 .. _seeds.sbml: http://bioasp.github.io/downloads/samples/ectodata/seeds.sbml
 .. _targets.sbml: http://bioasp.github.io/downloads/samples/ectodata/targets.sbml
-
