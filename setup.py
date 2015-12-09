@@ -22,7 +22,8 @@ setup(
   version          = '1.5.0a',
   url              = 'http://bioasp.github.io/meneco/',
   license          = 'GPLv3+',
-  description      = 'Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
+  description      = 'Metabolic Network Completion. Compute minimal completions '
+                     'to your draft network with reactions from a repair network.',
   long_description = open('README.rst').read(),
   author           = 'Sven Thiele',
   author_email     = 'sthiele78@gmail.com',
