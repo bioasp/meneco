@@ -16,35 +16,19 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 from setuptools import setup
-import os
-import sys
-import platform
-import distutils
-import site
-import sysconfig
-
-from setuptools.command.install import install as _install
-
-
-
-class install(_install):
-    def run(self):
-        _install.run(self)
                          
-setup(cmdclass={'install': install},
-      name='meneco',
-      version='1.4.3.1',
-      url='http://bioasp.github.io/meneco/',
-      license='GPLv3+',
-      description='Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
-      long_description=open('README.rst').read(),
-      author='Sven Thiele',
-      author_email='sthiele78@gmail.com',
-      packages = ['__meneco__'],
-      package_dir = {'__meneco__' : 'src'},
-      package_data = {'__meneco__' : ['encodings/*.lp']},
-      scripts = ['meneco.py'],
-      install_requires=[
-        "pyasp == 1.4.2"
-      ]
+setup(
+  name             = 'meneco',
+  version          = '1.5.0a',
+  url              = 'http://bioasp.github.io/meneco/',
+  license          = 'GPLv3+',
+  description      = 'Metabolic Network Completion. Compute minimal completions to your draft net with reactions from a repair net.',
+  long_description = open('README.rst').read(),
+  author           = 'Sven Thiele',
+  author_email     = 'sthiele78@gmail.com',
+  packages         = ['__meneco__'],
+  package_dir      = {'__meneco__' : 'src'},
+  package_data     = {'__meneco__' : ['encodings/*.lp']},
+  scripts          = ['meneco.py'],
+  install_requires = ['pyasp == 1.4.2']
 )

@@ -1,3 +1,7 @@
+1.5.0
+-----
+added option --menecheck to use meneco only for producibility checking
+
 1.4.3
 -----
 port to python 3
