@@ -34,7 +34,8 @@ if __name__ == '__main__':
                         help='targets in SBML format')
 
     parser.add_argument('-r', '--repairnet',
-                        help='metabolic network in SBML format')
+                        help='perform network completion using REPAIRNET '
+			'a metabolic network in SBML format')
 
     parser.add_argument('--enumerate',
                         help='enumerate all minimal completions',

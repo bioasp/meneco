@@ -31,7 +31,8 @@ For more options you can ask for help as follows::
         optional arguments:
           -h, --help            show this help message and exit
           -r REPAIRNET, --repairnet REPAIRNET
-                                metabolic network in SBML format
+                                perform network completion using REPAIRNET a metabolic
+                                network in SBML format
           --enumerate           enumerate all minimal completions
 
 
