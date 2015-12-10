@@ -1,6 +1,6 @@
 1.5.0
 -----
-added option --menecheck to use meneco only for producibility checking
+make repairnet optional if repairnet is not set meneco does only producibility checking
 
 1.4.3
 -----

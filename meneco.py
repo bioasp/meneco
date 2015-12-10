@@ -26,34 +26,27 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-d", "--draftnet",
-                        help="metabolic network in SBML format", required=True)
-    parser.add_argument("-r", "--repairnet",
-                        help="metabolic network in SBML format")
-    parser.add_argument("-s", "--seeds",
-                        help="seeds in SBML format", required=True)
-    parser.add_argument("-t", "--targets",
-                        help="targets in SBML format", required=True)
+    parser.add_argument('draftnet',
+                        help='metabolic network in SBML format')
+    parser.add_argument('seeds',
+                        help='seeds in SBML format')
+    parser.add_argument('targets',
+                        help='targets in SBML format')
+
+    parser.add_argument('-r', '--repairnet',
+                        help='metabolic network in SBML format')
 
     parser.add_argument('--enumerate',
-                        help="enumerate all minimal completions",
-                        action="store_true")
+                        help='enumerate all minimal completions',
+                        action='store_true')
 
-    parser.add_argument('--menecheck',
-                        help="test only the producibility of the targets",
-                        action="store_true")
 
-    args = parser.parse_args()
-
+    args         = parser.parse_args()
     draft_sbml   = args.draftnet
     repair_sbml  = args.repairnet
     seeds_sbml   = args.seeds
     targets_sbml = args.targets
 
-    if not args.menecheck and not repair_sbml:
-      parser.print_help()
-      print('\nREPAIRNET is required to run meneco without --menecheck')
-      quit()
 
     print('Reading draft network from ',draft_sbml,'...',end=' ')
     sys.stdout.flush()
@@ -85,7 +78,7 @@ if __name__ == '__main__':
       t                    = String2TermSet(target)
       unproducible_targets = TermSet(unproducible_targets.union(t))
 
-    if args.menecheck:
+    if args.repairnet==None:
       quit()
 
     print('\nReading repair network from ',repair_sbml,'...',end=' ')
