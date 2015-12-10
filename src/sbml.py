@@ -32,7 +32,7 @@ def get_model(sbml):
     if tag == "model":
       model_element = e
       break
-  turn model_element
+  return model_element
 
 def get_listOfSpecies(model):
   listOfSpecies = None
