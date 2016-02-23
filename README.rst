@@ -16,20 +16,22 @@ Usage
 
 Typical usage is::
 
-	$ meneco.py draftnetwork.sbml seeds.sbml targets.sbml -r repairnetwork.sbml 
+	$ meneco.py -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml 
 
 For more options you can ask for help as follows::
 
         $meneco.py --h
-        usage: meneco.py [-h] [-r REPAIRNET] [--enumerate] draftnet seeds targets
-
-        positional arguments:
-          draftnet              metabolic network in SBML format
-          seeds                 seeds in SBML format
-          targets               targets in SBML format
+        usage: meneco.py [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
+                         [--enumerate]
 
         optional arguments:
           -h, --help            show this help message and exit
+          -d DRAFTNET, --draftnet DRAFTNET
+                                metabolic network in SBML format
+          -s SEEDS, --seeds SEEDS
+                                seeds in SBML format
+          -t TARGETS, --targets TARGETS
+                                targets in SBML format
           -r REPAIRNET, --repairnet REPAIRNET
                                 perform network completion using REPAIRNET a metabolic
                                 network in SBML format

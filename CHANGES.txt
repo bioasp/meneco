@@ -1,6 +1,7 @@
 1.5.0
 -----
-make repairnet optional if repairnet is not set meneco does only producibility checking
+Make repairnet optional.
+If no repairnet is set meneco only performs a producibility check.
 
 1.4.3
 -----

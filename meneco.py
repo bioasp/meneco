@@ -26,12 +26,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('draftnet',
-                        help='metabolic network in SBML format')
-    parser.add_argument('seeds',
-                        help='seeds in SBML format')
-    parser.add_argument('targets',
-                        help='targets in SBML format')
+    parser.add_argument("-d", "--draftnet",
+                        help='metabolic network in SBML format', required=True)
+    parser.add_argument("-s", "--seeds",
+                        help='seeds in SBML format', required=True)
+    parser.add_argument("-t", "--targets",
+                        help='targets in SBML format', required=True)
 
     parser.add_argument('-r', '--repairnet',
                         help='perform network completion using REPAIRNET '
