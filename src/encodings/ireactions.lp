@@ -50,11 +50,18 @@
 
   binteresting(M) :- dscope(M).
 
-  binteresting(M) :- product(M,R,N), bireaction(R,N).
+  binteresting(M) :- product(M,R,N),  bireaction(R,N).
   binteresting(M) :- reactant(M,R,N), bireaction(R,N), reversible(R).
 
   bireaction(R,N) :- binteresting(M), reactant(M,R,N), product(M2,R,N), not dscope(M2), reaction(R,N).
   bireaction(R,N) :- binteresting(M), product(M,R,N), reactant(M2,R,N), not dscope(M2), reaction(R,N), reversible(R).
+
+  % take care of reactions that produce something from nothing
+  has_reactant(R) :- reactant(M,R,N).
+  has_product(R)  :- product(M,R,N).
+  bireaction(R,N) :- product(M,R,N), not has_reactant(R), not dscope(M), reaction(R,N).
+  bireaction(R,N) :- reactant(M,R,N), not has_product(R), not dscope(M), reaction(R,N), reversible(R).
+
 
  ireaction(R,N) :- iireaction(R,N), bireaction(R,N), not same(R).
 %  ireaction(R,N) :- iireaction(R,N), bireaction(R,N), not draft(N).
