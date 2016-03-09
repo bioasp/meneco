@@ -2,6 +2,7 @@
 -----
 Make repairnet optional.
 If no repairnet is set meneco only performs a producibility check.
+Correctly handle import reactions in the repair db.
 
 1.4.3
 -----
