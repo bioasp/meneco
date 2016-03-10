@@ -11,8 +11,8 @@ On Linux the executable script can then be found in ``~/.local/bin``
 and on MacOS the script is under ``/Users/YOURUSERNAME/Library/Python/3.2/bin``.
 
 
-Usage
-=====
+Usage Command line interface
+============================
 
 Typical usage is::
 
@@ -36,6 +36,14 @@ For more options you can ask for help as follows::
                                 perform network completion using REPAIRNET a metabolic
                                 network in SBML format
           --enumerate           enumerate all minimal completions
+
+
+Usage Library
+=============
+
+For a guided example, see a demonstration IPython Notebook_.
+
+.. _Notebook: http://nbviewer.jupyter.org/github/bioasp/meneco/blob/master/meneco.ipynb
 
 
 Samples
