@@ -18,6 +18,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
+from pyasp.term import *
 from pyasp.asp import *
 from __meneco__ import query, utils, sbml
 

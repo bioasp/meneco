@@ -19,7 +19,7 @@ from setuptools import setup
                          
 setup(
   name             = 'meneco',
-  version          = '1.5.1',
+  version          = '1.5.2',
   url              = 'http://bioasp.github.io/meneco/',
   license          = 'GPLv3+',
   description      = 'Metabolic Network Completion. Compute minimal completions '
@@ -31,5 +31,5 @@ setup(
   package_dir      = {'__meneco__' : 'src'},
   package_data     = {'__meneco__' : ['encodings/*.lp']},
   scripts          = ['meneco.py'],
-  install_requires = ['pyasp == 1.4.2']
+  install_requires = ['pyasp == 1.4.3']
 )

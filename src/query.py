@@ -17,6 +17,7 @@
 # -*- coding: utf-8 -*-
 import os
 import tempfile
+from pyasp.term import *
 from pyasp.asp import *
 
 
