@@ -1,3 +1,7 @@
+1.5.2
+-----
+use pyasp-1.4.3
+
 1.5.1
 -----
 Correctly handle import reactions in the repair db.
