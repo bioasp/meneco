@@ -16,7 +16,6 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 import os
-import tempfile
 from pyasp.term import *
 from pyasp.asp import *
 
