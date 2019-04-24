@@ -19,7 +19,7 @@ from setuptools import setup
 
 setup(
   name             = 'meneco',
-  version          = '1.5.3',
+  version          = '2.0.0',
   url              = 'http://bioasp.github.io/meneco/',
   license          = 'GPLv3+',
   description      = 'Metabolic Network Completion. Compute minimal completions '

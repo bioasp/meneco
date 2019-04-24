@@ -98,7 +98,7 @@ def get_unproducible(draft, seeds, targets):
     seed_f   =  seeds.to_file()
     target_f = targets.to_file()
     prg      = [unproducible_prg, draft_f, seed_f, target_f ]
-    solver   = GringoClasp()
+    solver   = Gringo4Clasp()
     models   = solver.run(prg,collapseTerms=True,collapseAtoms=False)
     os.unlink(draft_f)
     os.unlink(seed_f)
@@ -109,7 +109,7 @@ def get_unproducible(draft, seeds, targets):
 def compute_ireactions(instance):
     instance_f = instance.to_file()
     prg        = [ ireaction_prg, instance_f]
-    solver     = GringoClasp()
+    solver     = Gringo4Clasp()
     models     = solver.run(prg,collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
     assert(len(models) == 1)
@@ -127,7 +127,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     prg        = [minimal_completion_prg, instance_f]
 
     co         = "--configuration=jumpy --opt-strategy=5"
-    solver     = GringoClasp(clasp_options=co)
+    solver     = Gringo4Clasp(clasp_options=co)
 
     optimum    = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
@@ -146,7 +146,7 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN --opt-bound='+str(optimum)
 
-    solver     = GringoClasp(clasp_options=options)
+    solver     = Gringo4Clasp(clasp_options=options)
 
     intersec   = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
@@ -165,7 +165,7 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN --opt-bound='+str(optimum)
 
-    solver     = GringoClasp(clasp_options=options)
+    solver     = Gringo4Clasp(clasp_options=options)
 
     union      = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
@@ -183,7 +183,7 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     prg        = [minimal_completion_prg, instance_f]
 
     options    = str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN --opt-bound='+str(optimum)
-    solver     = GringoClasp(clasp_options=options)
+    solver     = Gringo4Clasp(clasp_options=options)
     models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
 
     os.unlink(instance_f)
@@ -201,8 +201,7 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
     prg        = [completion_prg, instance_f]
     options    = '--enum-mode cautious --opt-mode=ignore '
 
-    solver     = GringoClasp(clasp_options=options)
+    solver     = Gringo4Clasp(clasp_options=options)
     models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
     os.unlink(instance_f)
     return models[0]
-

@@ -44,8 +44,8 @@
 % operable reactions
 % no xreaction if not all reactants in xscope
 
-  oreaction(R,N) :- xscope(M) : reactant(M,R,N), reaction(R,N), not draft(N).
-  oreaction(R,N) :- xscope(M) : product(M,R,N), reaction(R,N), reversible(R), not draft(N).
+  oreaction(R,N) :- reaction(R,N), not draft(N), xscope(M) : reactant(M,R,N).
+  oreaction(R,N) :- reaction(R,N), reversible(R), not draft(N), xscope(M) : product(M,R,N).
 
   :- xreaction(R,N), not oreaction(R,N).
 
@@ -88,13 +88,12 @@
 
 % prohibit xreactions that produce nothing used by an operable reaction
 
-  opreaction(R,N) :- xscope(M) : reactant(M,R,N), reaction(R,N).
-  opreaction(R,N) :- xscope(M) : product(M,R,N), reaction(R,N),reversible(R).
+  opreaction(R,N) :- reaction(R,N), xscope(M) : reactant(M,R,N).
+  opreaction(R,N) :- reaction(R,N),reversible(R), xscope(M) : product(M,R,N).
 
   used(M) :- opreaction(R,N), reactant(M,R,N).
   used(M) :- opreaction(R,N), reversible(R), product(M,R,N).
   used(M) :- target(M).
   :- xreaction(R,N), not reversible(R), not used(M) : product(M,R,N).
 
-#hide.
 #show xreaction/2.

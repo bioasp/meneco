@@ -40,7 +40,4 @@
   unproducible_target(M) :- target(M), not pscope(M).
 
 
-#hide.
 #show unproducible_target/1.
-
-
