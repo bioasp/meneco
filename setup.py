@@ -32,5 +32,5 @@ setup(
   package_dir      = {'__meneco__' : 'src'},
   package_data     = {'__meneco__' : ['encodings/*.lp']},
   scripts          = ['meneco.py'],
-  install_requires = ['pyasp == 1.4.4']
+  install_requires = ['pyasp == 1.4.3']
 )
