@@ -109,6 +109,6 @@
 
 % optimizations
 
-#minimize { R@1,N : xreaction(R,N) ; 0@1}.
+#minimize { 1@1, R,N : xreaction(R,N) ; 0@1}.
 
 #show xreaction/2.
