@@ -13,11 +13,11 @@ and on MacOS the script is under `/Users/YOURUSERNAME/Library/Python/3.2/bin`.
 
 Typical usage is:
 
-    > meneco.py -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
+    > meneco -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
 
 For more options you can ask for help as follows:
 
-    > meneco.py --h
+    > meneco --h
     usage: meneco.py [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
                      [--enumerate]
 
@@ -38,6 +38,13 @@ For more options you can ask for help as follows:
 # Usage Library
 
 For a guided example, see a demonstration IPython [Notebook](http://nbviewer.jupyter.org/github/bioasp/meneco/blob/master/meneco.ipynb).
+
+
+# Bibliography
+
+Please cite the following paper when using Meneco
+
+S. Prigent et al., “Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks,” PLOS Computational Biology, vol. 13, no. 1, p. e1005276, Jan. 2017.
 
 
 # Samples

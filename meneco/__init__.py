@@ -15,3 +15,5 @@
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
+
+from meneco.meneco import run_meneco

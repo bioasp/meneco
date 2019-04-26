@@ -18,19 +18,20 @@
 from setuptools import setup
 
 setup(
-  name             = 'meneco',
-  version          = '2.0.0',
-  url              = 'http://bioasp.github.io/meneco/',
-  license          = 'GPLv3+',
-  description      = 'Metabolic Network Completion. Compute minimal completions '
-                     'to your draft network with reactions from a repair network.',
-  long_description = open('README.md').read(),
-  long_description_content_type="text/markdown",
-  author           = 'Sven Thiele',
-  author_email     = 'sthiele78@gmail.com',
-  packages         = ['__meneco__'],
-  package_dir      = {'__meneco__' : 'src'},
-  package_data     = {'__meneco__' : ['encodings/*.lp']},
-  scripts          = ['meneco.py'],
-  install_requires = ['pyasp == 1.4.3']
+    name='Meneco',
+    version='2.0.0',
+    url='http://bioasp.github.io/meneco/',
+    license='GPLv3+',
+    description='Metabolic Network Completion. Compute minimal completions '
+                        'to your draft network with reactions from a repair network.',
+    long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
+    author='Sven Thiele',
+    author_email='sthiele78@gmail.com',
+    packages=['meneco'],
+    package_dir={'meneco': 'meneco'},
+    package_data={'meneco': ['encodings/*.lp']},
+    # scripts          = ['meneco.py'],
+    entry_points={'console_scripts': ['meneco = meneco.__main__:main_meneco']},
+    install_requires=['pyasp == 1.4.3']
 )

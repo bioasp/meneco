@@ -196,6 +196,3 @@ def readSBMLseeds(filename) :
     if tag == "species":
       lpfacts.add(Term('seed', ["\""+e.attrib.get("id")+"\""]))
   return lpfacts
-
-
-
