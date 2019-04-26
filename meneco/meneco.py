@@ -45,7 +45,7 @@ def cmd_meneco():
     parser.add_argument('--enumerate',
                         help='enumerate all minimal completions',
                         action='store_true',
-                        default='False')
+                        default=False)
 
     args = parser.parse_args()
     draft_sbml = args.draftnet
@@ -80,7 +80,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     logger.info('\nChecking draftnet for unproducible targets')
     model = query.get_unproducible(draftnet, targets, seeds)
-    print(' ', len(model), 'unproducible targets:')
+    logger.info(' ' + str(len(model)) + ' unproducible targets:')
     utils.print_met(model.to_list())
     unproducible_targets = TermSet()
     unprod_lst = []
@@ -100,7 +100,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     all_reactions = draftnet
     all_reactions = TermSet(all_reactions.union(repairnet))
     logger.info('\nChecking draftnet + repairnet for unproducible targets')
-    sys.stdout.flush()
     model = query.get_unproducible(all_reactions, seeds, targets)
     logger.info('  still ' + str(len(model)) + ' unproducible targets:')
     utils.print_met(model.to_list())
@@ -134,7 +133,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
         logger.info(' ' + str(len(essentials)) + ' essential reactions found:')
         utils.print_met(essentials.to_list())
         essential_reactions = TermSet(essential_reactions.union(essentials))
-    logger.info('\nOverall' + str(len(essential_reactions)) +
+    logger.info('\nOverall ' + str(len(essential_reactions)) +
                 ' essential reactions found.')
     utils.print_met(essential_reactions)
     logger.info('\nAdding essential reactions to network.')
@@ -171,7 +170,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     if enumeration:
         logger.info('\nComputing all completions with size ' +
                     str(optimum))
-        sys.stdout.flush()
         enumeration_sol = query.get_optimal_completions(
             draftnet, repairnet, seeds, reconstructable_targets, optimum)
         count = 1
@@ -183,6 +181,8 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
             enumeration_sol_lst.append(model_lst)
             utils.print_met(model_lst)
         #TODO provide clean lists, not list version of terms in what is returned
+    else:
+        enumeration_sol_lst = [] 
     return unprod_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
 
 
