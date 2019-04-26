@@ -42,9 +42,17 @@ For a guided example, see a demonstration IPython [Notebook](http://nbviewer.jup
 
 # Bibliography
 
-Please cite the following paper when using Meneco
+Please cite the following paper when using Meneco:
 
-S. Prigent et al., “Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks,” PLOS Computational Biology, vol. 13, no. 1, p. e1005276, Jan. 2017.
+**S. Prigent et al., “Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks,” PLOS Computational Biology, vol. 13, no. 1, p. e1005276, Jan. 2017.**
+
+The concepts underlying Meneco is described in this paper:
+
+T. Schaub and S. Thiele, “Metabolic network expansion with answer set programming,” in Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics), 2009, vol. 5649 LNCS, pp. 312–326.
+
+A first application of the method was presented in:
+
+G. Collet et al., “Extending the Metabolic Network of Ectocarpus Siliculosus Using Answer Set Programming,” in LPNMR 2013: Logic Programming and Nonmonotonic Reasoning, 2013, pp. 245–256.
 
 
 # Samples
