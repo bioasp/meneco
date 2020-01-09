@@ -1,3 +1,4 @@
+[![PyPI version](https://img.shields.io/pypi/v/meneco.svg)](https://pypi.org/project/meneco/)
 # Installation
 
 You can install meneco by running:
