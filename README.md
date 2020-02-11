@@ -2,11 +2,9 @@
 
 You can install meneco by running:
 
-    > pip install --user meneco
+    > python setup.py install
 
-On Linux the executable script can then be found in `~/.local/bin`
-
-and on MacOS the script is under `/Users/YOURUSERNAME/Library/Python/3.2/bin`.
+You should always use a virtual environment ([https://virtualenv.pypa.io/en/latest/](virtualenv), [https://virtualenvwrapper.readthedocs.io/en/latest/](virtualenv wrapper)) when using Python
 
 
 # Usage Command line interface
