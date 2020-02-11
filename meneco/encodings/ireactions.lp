@@ -82,6 +82,4 @@
 
 %:- target(X), pscope(X), not iscope(X).
 
-#hide.
 #show ireaction/2.
-
