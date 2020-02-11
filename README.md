@@ -4,7 +4,7 @@ You can install meneco by running:
 
     > python setup.py install
 
-You should always use a virtual environment ([https://virtualenv.pypa.io/en/latest/](virtualenv), [https://virtualenvwrapper.readthedocs.io/en/latest/](virtualenv wrapper)) when using Python
+You should always use a virtual environment ([virtualenv](https://virtualenv.pypa.io/en/latest/), [virtualenv wrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)) when using Python
 
 
 # Usage Command line interface
