@@ -122,7 +122,9 @@ def readSBMLnetwork(filename, name) :
       else:
         for p in listOfProducts:
           lpfacts.add(Term('product', ["\""+p.attrib.get("species")+"\"", "\""+reactionId+"\"","\""+name+"\""]))
-
+  
+  if name == 'draft' :
+    lpfacts.add(Term('draft', ["\"" + name + "\""]))
   return lpfacts
 
 
@@ -162,6 +164,9 @@ def readSBMLnetwork_with_score(filename, name) :
       else :
         #print " no value for ",Reaction_ID
         lpfacts.add(Term('value', ["\""+reactionId+"\"", "0"]))
+  
+  if name == 'draft' :
+    lpfacts.add(Term('draft', ["\"" + name + "\""]))
 
   return lpfacts
 
@@ -172,7 +177,7 @@ def readSBMLtargets(filename) :
   sbml          = tree.getroot()
   model         = get_model(sbml)
   listOfSpecies = get_listOfSpecies(model)
-
+  
   for e in listOfSpecies:
     if e.tag[0] == "{":
       uri, tag = e.tag[1:].split("}")

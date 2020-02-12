@@ -118,8 +118,8 @@ def compute_ireactions(instance):
 
 def get_minimal_completion_size(draft, repairnet, seeds, targets):
 
-    draftfact  = String2TermSet('draft("draft")')
-    instance   = TermSet(draft.union(draftfact).union(repairnet).union(targets).union(seeds))
+   # draftfact  = String2TermSet('draft("draft")')
+    instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
     instance_f = instance.to_file()
@@ -136,8 +136,8 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
 
 def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
-    draftfact  = String2TermSet('draft("draft")')
-    instance   = TermSet(draft.union(draftfact).union(repairnet).union(targets).union(seeds))
+    #draftfact  = String2TermSet('draft("draft")')
+    instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
     instance_f = instance.to_file()
@@ -149,14 +149,14 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
     solver     = Gringo4Clasp(clasp_options=options)
 
     intersec   = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return intersec[0]
 
 
 def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
-    draftfact  = String2TermSet('draft("draft")')
-    instance   = TermSet(draft.union(draftfact).union(repairnet).union(targets).union(seeds))
+    #draftfact  = String2TermSet('draft("draft")')
+    instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
     instance_f = instance.to_file()
@@ -168,14 +168,14 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
     solver     = Gringo4Clasp(clasp_options=options)
 
     union      = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return union[0]
 
 
 def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0):
 
-    draftfact  = String2TermSet('draft("draft")')
-    instance   = TermSet(draft.union(draftfact).union(repairnet).union(targets).union(seeds))
+    #draftfact  = String2TermSet('draft("draft")')
+    instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
     instance_f = instance.to_file()
@@ -186,14 +186,14 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     solver     = Gringo4Clasp(clasp_options=options)
     models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
 
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return models
 
 
 def get_intersection_of_completions(draft, repairnet, seeds, targets):
 
-    draftfact  = String2TermSet('draft("draft")')
-    instance   = TermSet(draft.union(draftfact).union(repairnet).union(targets).union(seeds))
+    #draftfact  = String2TermSet('draft("draft")')
+    instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
     instance_f = instance.to_file()
@@ -203,5 +203,5 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
 
     solver     = Gringo4Clasp(clasp_options=options)
     models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return models[0]
