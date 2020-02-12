@@ -33,5 +33,5 @@ setup(
     package_data={'meneco': ['encodings/*.lp']},
     # scripts          = ['meneco.py'],
     entry_points={'console_scripts': ['meneco = meneco.__main__:main_meneco']},
-    install_requires=['pyasp == 1.4.3']
+    install_requires = ['clyngor_with_clingo']
 )

@@ -16,9 +16,9 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 import os
-from pyasp.term import *
-from pyasp.asp import *
-
+#from pyasp.term import *
+#from pyasp.asp import *
+import clyngor
 
 root                      = __file__.rsplit('/', 1)[0]
 unproducible_prg          = root + '/encodings/unproducible_targets.lp'
@@ -29,68 +29,68 @@ minimal_completion_wb_prg = root + '/encodings/card_min_completions_all_targets_
 completion_prg            = root + '/encodings/completions_all_targets.lp'
 
 
-def get_mapping_ireaction(termset):
-    dict    = {}
-    revdict = {}
-    for a in termset:
-      if a.pred() == "ireaction" :
-        if not a.arg(0) in dict:
-          id             = len(dict)
-          dict[a.arg(0)] = id
-          revdict[id]    = a.arg(0)
-    return dict, revdict
+# def get_mapping_ireaction(termset):
+#     dict    = {}
+#     revdict = {}
+#     for a in termset:
+#       if a.pred() == "ireaction" :
+#         if not a.arg(0) in dict:
+#           id             = len(dict)
+#           dict[a.arg(0)] = id
+#           revdict[id]    = a.arg(0)
+#     return dict, revdict
 
 
-def map_reaction_ids(termset, dict):
-    mapped = TermSet()
-    for a in termset:
-      if a.pred() == "reaction" :
-        if a.arg(0) in dict:
-          mapped.add(Term('reaction', [str(dict[a.arg(0)]), a.arg(1)]))
-        else : mapped.add(a)
+# def map_reaction_ids(termset, dict):
+#     mapped = TermSet()
+#     for a in termset:
+#       if a.pred() == "reaction" :
+#         if a.arg(0) in dict:
+#           mapped.add(Term('reaction', [str(dict[a.arg(0)]), a.arg(1)]))
+#         else : mapped.add(a)
 
-      elif a.pred() == "xreaction" :
-        if a.arg(0) in dict:
-          mapped.add(Term('xreaction', [str(dict[a.arg(0)]), a.arg(1)]))
-        else : mapped.add(a)
+#       elif a.pred() == "xreaction" :
+#         if a.arg(0) in dict:
+#           mapped.add(Term('xreaction', [str(dict[a.arg(0)]), a.arg(1)]))
+#         else : mapped.add(a)
 
-      elif a.pred() == "ireaction" :
-        if a.arg(0) in dict:
-          mapped.add(Term('ireaction', [str(dict[a.arg(0)]), a.arg(1)]))
-        else : print("Error: unknown ireaction, query.py line 64")
+#       elif a.pred() == "ireaction" :
+#         if a.arg(0) in dict:
+#           mapped.add(Term('ireaction', [str(dict[a.arg(0)]), a.arg(1)]))
+#         else : print("Error: unknown ireaction, query.py line 64")
 
-      elif a.pred() == "value" :
-        if a.arg(0) in dict:
-          mapped.add(Term('value', [str(dict[a.arg(0)]), a.arg(1)]))
-        else : mapped.add(a)
+#       elif a.pred() == "value" :
+#         if a.arg(0) in dict:
+#           mapped.add(Term('value', [str(dict[a.arg(0)]), a.arg(1)]))
+#         else : mapped.add(a)
 
-      elif a.pred() == "product" :
-        if a.arg(1) in dict:
-          mapped.add(Term('product', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
-        else : mapped.add(a)
+#       elif a.pred() == "product" :
+#         if a.arg(1) in dict:
+#           mapped.add(Term('product', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
+#         else : mapped.add(a)
 
-      elif a.pred() == "reactant" :
-        if a.arg(1) in dict:
-          mapped.add(Term('reactant', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
-        else : mapped.add(a)
+#       elif a.pred() == "reactant" :
+#         if a.arg(1) in dict:
+#           mapped.add(Term('reactant', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
+#         else : mapped.add(a)
 
-      elif a.pred() == "reversible" :
-        if a.arg(0) in dict:
-          mapped.add(Term('reversible', [str(dict[a.arg(0)])]))
-        else : mapped.add(a)
-      else :
-        mapped.add(a)
+#       elif a.pred() == "reversible" :
+#         if a.arg(0) in dict:
+#           mapped.add(Term('reversible', [str(dict[a.arg(0)])]))
+#         else : mapped.add(a)
+#       else :
+#         mapped.add(a)
 
-    return mapped
+#     return mapped
 
 
-def unmap_reaction_ids(termset, revdict):
-    unmapped = TermSet()
-    for a in termset:
-      if a.pred() == "xreaction" :
-        unmapped.add(Term('xreaction', [str(revdict[int(a.arg(0))]), a.arg(1)]))
+# def unmap_reaction_ids(termset, revdict):
+#     unmapped = TermSet()
+#     for a in termset:
+#       if a.pred() == "xreaction" :
+#         unmapped.add(Term('xreaction', [str(revdict[int(a.arg(0))]), a.arg(1)]))
 
-    return unmapped
+#     return unmapped
 
 
 def get_unproducible(draft, seeds, targets):
@@ -98,22 +98,31 @@ def get_unproducible(draft, seeds, targets):
     seed_f   =  seeds.to_file()
     target_f = targets.to_file()
     prg      = [unproducible_prg, draft_f, seed_f, target_f ]
-    solver   = Gringo4Clasp()
-    models   = solver.run(prg,collapseTerms=True,collapseAtoms=False)
+    #solver   = Gringo4Clasp()
+    options = ''
+    best_model = None
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
     os.unlink(draft_f)
     os.unlink(seed_f)
     os.unlink(target_f)
-    return models[0]
+    return best_model
 
 
 def compute_ireactions(instance):
     instance_f = instance.to_file()
     prg        = [ ireaction_prg, instance_f]
-    solver     = Gringo4Clasp()
-    models     = solver.run(prg,collapseTerms=True, collapseAtoms=False)
+    #solver     = Gringo4Clasp()
+    best_model = None
+
+    options = ''
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
     os.unlink(instance_f)
     assert(len(models) == 1)
-    return models[0]
+    return best_model
 
 
 def get_minimal_completion_size(draft, repairnet, seeds, targets):
@@ -127,9 +136,13 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     prg        = [minimal_completion_prg, instance_f]
 
     co         = "--configuration=jumpy --opt-strategy=5"
-    solver     = Gringo4Clasp(clasp_options=co)
+    #solver     = Gringo4Clasp(clasp_options=co)
 
-    optimum    = solver.run(prg, collapseTerms=True, collapseAtoms=False)
+    best_model = None
+    models = clyngor.solve(prg, options=co)
+    for model in models.discard_quotes.by_arity:
+        optimum = model
+  
     os.unlink(instance_f)
     return optimum
 
@@ -146,11 +159,14 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN --opt-bound='+str(optimum)
 
-    solver     = Gringo4Clasp(clasp_options=options)
+    #solver     = Gringo4Clasp(clasp_options=options)
 
-    intersec   = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    #os.unlink(instance_f)
-    return intersec[0]
+    best_model = None
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
+    os.unlink(instance_f)
+    return best_model
 
 
 def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
@@ -165,11 +181,14 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN --opt-bound='+str(optimum)
 
-    solver     = Gringo4Clasp(clasp_options=options)
+    #solver     = Gringo4Clasp(clasp_options=options)
 
-    union      = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    #os.unlink(instance_f)
-    return union[0]
+    best_model = None
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
+    os.unlink(instance_f)
+    return best_model
 
 
 def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0):
@@ -183,11 +202,15 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     prg        = [minimal_completion_prg, instance_f]
 
     options    = str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN --opt-bound='+str(optimum)
-    solver     = Gringo4Clasp(clasp_options=options)
-    models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
+    #solver     = Gringo4Clasp(clasp_options=options)
+    
+    best_model = None
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
 
-    #os.unlink(instance_f)
-    return models
+    os.unlink(instance_f)
+    return best_model
 
 
 def get_intersection_of_completions(draft, repairnet, seeds, targets):
@@ -201,7 +224,12 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
     prg        = [completion_prg, instance_f]
     options    = '--enum-mode cautious --opt-mode=ignore '
 
-    solver     = Gringo4Clasp(clasp_options=options)
-    models     = solver.run(prg, collapseTerms=True, collapseAtoms=False)
-    #os.unlink(instance_f)
+    #solver     = Gringo4Clasp(clasp_options=options)
+    
+    best_model = None
+    models = clyngor.solve(prg, options=options)
+    for model in models.discard_quotes.by_arity:
+        best_model = model
+
+    os.unlink(instance_f)
     return models[0]
