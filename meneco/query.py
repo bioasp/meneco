@@ -19,6 +19,13 @@ import os
 #from pyasp.term import *
 #from pyasp.asp import *
 import clyngor
+from clyngor import as_pyasp
+from clyngor.as_pyasp import TermSet, Atom
+import tempfile
+
+import logging
+logger = logging.getLogger(__name__)
+
 
 root                      = __file__.rsplit('/', 1)[0]
 unproducible_prg          = root + '/encodings/unproducible_targets.lp'
@@ -121,8 +128,15 @@ def compute_ireactions(instance):
     for model in models.discard_quotes.by_arity:
         best_model = model
     os.unlink(instance_f)
-    assert(len(models) == 1)
-    return best_model
+
+    output = TermSet()
+    for pred in best_model :
+        if pred == 'ireaction' :
+            for a in best_model[pred] : 
+                output.add(Atom('ireaction( \"' + a[0] +'\", \"' + a[1] + '\")'))
+
+    #assert(best_model != None)
+    return output
 
 
 def get_minimal_completion_size(draft, repairnet, seeds, targets):
@@ -138,7 +152,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     co         = "--configuration=jumpy --opt-strategy=5"
     #solver     = Gringo4Clasp(clasp_options=co)
 
-    best_model = None
+    optimum = None
     models = clyngor.solve(prg, options=co)
     for model in models.discard_quotes.by_arity:
         optimum = model
@@ -232,4 +246,4 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
         best_model = model
 
     os.unlink(instance_f)
-    return models[0]
+    return best_model

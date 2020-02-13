@@ -18,10 +18,14 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
-from pyasp.term import *
-from pyasp.asp import *
+#from pyasp.term import *
+#from pyasp.asp import *
 from meneco import query, utils, sbml
 import logging
+import clyngor
+from clyngor import as_pyasp
+from clyngor.as_pyasp import TermSet, Atom
+import tempfile
 
 logger = logging.getLogger(__name__)
 
@@ -80,58 +84,86 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     logger.info('\nChecking draftnet for unproducible targets')
     model = query.get_unproducible(draftnet, targets, seeds)
-    logger.info(' ' + str(len(model)) + ' unproducible targets:')
-    utils.print_met(model.to_list())
-    unproducible_targets = TermSet()
-    unprod_lst = []
-    for a in model:
-        target = str(a)[13:]
-        t = String2TermSet(target)
-        unprod_lst.append(target)
-        unproducible_targets = TermSet(unproducible_targets.union(t))
+    sys.stdout.flush()
+    logger.info('done')
+
+    unproducible_targets_lst = []
+    unproducible_targets_atoms = TermSet()
+    for pred in model :
+        if pred == 'unproducible_target':
+            for a in model[pred, 1]:
+                unproducible_targets_atoms.add(Atom('unproducible_targets', ['"'+a[0]+'"']))
+                unproducible_targets_lst.append(a[0])
+    
+    logger.info(str(len(unproducible_targets_lst))+'unproducible targets:')
+    logger.info("\n".join(unproducible_targets_lst))
 
     if repair_sbml == None:
-        return(unprod_lst)
+        return(unproducible_targets_lst)
 
     logger.info('\nReading repair network from ' + repair_sbml)
     repairnet = sbml.readSBMLnetwork(repair_sbml, 'repairnet')
     # repairnet.to_file("repairnet.lp")
+    sys.stdout.flush()
+    logger.info('done')
 
     all_reactions = draftnet
     all_reactions = TermSet(all_reactions.union(repairnet))
+
     logger.info('\nChecking draftnet + repairnet for unproducible targets')
     model = query.get_unproducible(all_reactions, seeds, targets)
-    logger.info('  still ' + str(len(model)) + ' unproducible targets:')
-    utils.print_met(model.to_list())
-    never_producible = TermSet()
-    for a in model:
-        target = str(a)[13:]
-        t = String2TermSet(target)
-        never_producible = TermSet(never_producible.union(t))
 
-    reconstructable_targets = TermSet()
-    targets_to_reconstruct = []
-    for t in unproducible_targets:
+    unproducible_targets = []
+    for pred in model :
+        if pred == 'unproducible_target':
+            for a in model[pred, 1]:
+                unproducible_targets.append(a[0])
+    
+
+    logger.info('  still ' + str(len(unproducible_targets)) + ' unproducible targets:')
+    logger.info("\n".join(unproducible_targets))
+
+    never_producible = []
+    never_productible_atoms = TermSet()
+    for pred in model :
+        if pred == 'unproducible_target':
+            for a in model[pred, 1]:
+                never_productible_atoms.add(Atom('unproducible_targets', ['"'+a[0]+'"']))
+                never_producible.append(a[0])
+
+    reconstructable_targets = []
+    reconstrutable_targets_atoms = TermSet()
+    for t in unproducible_targets_lst:
         if not (t in never_producible):
-            reconstructable_targets.add(t)
-            targets_to_reconstruct.append(str(t.arg(0)))
+            reconstructable_targets.append(t)
+            reconstrutable_targets_atoms.add(Atom('producible_targets', ['"'+a[0]+'"']))
+
     logger.info('\n ' + str(len(reconstructable_targets)) +
                 ' targets to reconstruct:')
-    utils.print_met(reconstructable_targets)
+                
+    logger.info("\n".join(reconstructable_targets))
 
     if len(reconstructable_targets) == 0:
         utils.clean_up()
         quit()
 
+    logger.info(reconstructable_targets)
+
+
     essential_reactions = TermSet()
     for t in reconstructable_targets:
+        logger.info(t)
         single_target = TermSet()
-        single_target.add(t)
-        logger.info('\nComputing essential reactions for ' + t.arg(0))
+        single_target.add(Atom('target', ['"'+t+'"']))
+        logger.info(single_target)
+        logger.info('\nComputing essential reactions for ' + t)
         essentials = query.get_intersection_of_completions(
             draftnet, repairnet, seeds, single_target)
         logger.info(' ' + str(len(essentials)) + ' essential reactions found:')
-        utils.print_met(essentials.to_list())
+        
+        logger.info(essentials)
+        logger.info("\n".join(essentials))
+        
         essential_reactions = TermSet(essential_reactions.union(essentials))
     logger.info('\nOverall ' + str(len(essential_reactions)) +
                 ' essential reactions found.')
