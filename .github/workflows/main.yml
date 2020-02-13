@@ -9,9 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: Prepare environment
+      run: python setup.py install
+    - name: Run on toy example
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        cd toy
+        meneco -d draft.sbml -s seeds.sbml -t targets.sbml -r repair.sbml 
+
