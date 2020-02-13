@@ -1,0 +1,28 @@
+name: CI
+
+on: [push, pull_request, check_run]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up python 
+      uses: actions/setup-python@v1
+      with: 
+        python-version: 3.8
+    - name: Prepare environment
+      run: |
+        python -m pip install --upgrade pip
+        python setup.py install
+    - name: Reinstall pyasp
+      run: |
+        pip uninstall pyasp --yes
+        pip install pyasp==1.4.3 --no-cache-dir
+    - name: Run on toy example
+      run: |
+        cd toy
+        meneco -d draft.sbml -s seeds.sbml -t targets.sbml -r repair.sbml  2>&1 | tee output.log
+        tail -n2 output.log | sort | fmt | tee output_union.log | diff --report-identical-files - expected_union.log
