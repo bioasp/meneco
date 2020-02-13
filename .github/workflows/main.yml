@@ -19,8 +19,8 @@ jobs:
         python setup.py install
     - name: Reinstall pyasp
       run: |
-        pip uninstall pyasp
-        install pyasp==1.4.3 --no-cache-dir
+        pip uninstall pyasp --yes
+        pip install pyasp==1.4.3 --no-cache-dir --yes
     - name: Run on toy example
       run: |
         cd toy
