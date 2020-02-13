@@ -20,7 +20,7 @@ jobs:
     - name: Reinstall pyasp
       run: |
         pip uninstall pyasp --yes
-        pip install pyasp==1.4.3 --no-cache-dir --yes
+        pip install pyasp==1.4.3 --no-cache-dir
     - name: Run on toy example
       run: |
         cd toy
