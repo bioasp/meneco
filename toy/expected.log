@@ -1,0 +1,101 @@
+Reading draft network from draft.sbml
+Reading seeds from seeds.sbml
+Reading targets from targets.sbml
+
+Checking draftnet for unproducible targets
+ 31 unproducible targets:
+ "M_cu2_c"
+ "M_thf_c"
+ "M_pe160_p"
+ "M_mobd_c"
+ "M_gtp_c"
+ "M_10fthf_c"
+ "M_fad_c"
+ "M_cys_DASH_L_c"
+ "M_mlthf_c"
+ "M_pydx5p_c"
+ "M_pheme_c"
+ "M_ribflv_c"
+ "M_dgtp_c"
+ "M_sheme_c"
+ "M_cl_c"
+ "M_utp_c"
+ "M_amet_c"
+ "M_nad_c"
+ "M_coa_c"
+ "M_2ohph_c"
+ "M_pe161_c"
+ "M_pe160_c"
+ "M_pe161_p"
+ "M_met_DASH_L_c"
+ "M_so4_c"
+ "M_dctp_c"
+ "M_udcpdp_c"
+ "M_adp_c"
+ "M_nadp_c"
+ "M_fe3_c"
+ "M_datp_c"
+
+Reading repair network from repair.sbml
+
+Checking draftnet + repairnet for unproducible targets
+  still 29 unproducible targets:
+ "M_thf_c"
+ "M_pe160_p"
+ "M_mobd_c"
+ "M_gtp_c"
+ "M_10fthf_c"
+ "M_fad_c"
+ "M_cys_DASH_L_c"
+ "M_mlthf_c"
+ "M_pydx5p_c"
+ "M_pheme_c"
+ "M_ribflv_c"
+ "M_dgtp_c"
+ "M_sheme_c"
+ "M_utp_c"
+ "M_amet_c"
+ "M_nad_c"
+ "M_coa_c"
+ "M_2ohph_c"
+ "M_pe161_c"
+ "M_pe160_c"
+ "M_pe161_p"
+ "M_met_DASH_L_c"
+ "M_so4_c"
+ "M_dctp_c"
+ "M_udcpdp_c"
+ "M_adp_c"
+ "M_nadp_c"
+ "M_fe3_c"
+ "M_datp_c"
+
+ 2 targets to reconstruct:
+ "M_cl_c"
+ "M_cu2_c"
+
+Computing essential reactions for "M_cl_c"
+ 1 essential reactions found:
+ "R_CLt3_2pp"
+
+Computing essential reactions for "M_cu2_c"
+ 1 essential reactions found:
+ "R_CU2tpp"
+
+Overall 2 essential reactions found.
+ "R_CU2tpp"
+ "R_CLt3_2pp"
+
+Adding essential reactions to network.
+
+Computing one minimal completion to produce all targets
+ "R_CU2tpp"
+ "R_CLt3_2pp"
+
+Computing common reactions in all completion with size 2
+ "R_CU2tpp"
+ "R_CLt3_2pp"
+
+Computing union of reactions from all completion with size 2
+ "R_CU2tpp"
+ "R_CLt3_2pp"
