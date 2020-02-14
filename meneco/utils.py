@@ -17,6 +17,7 @@
 # -*- coding: utf-8 -*-
 import os
 import logging
+import tempfile
 
 logger = logging.getLogger(__name__)
 
@@ -43,3 +44,20 @@ def print_met(predictions):
             logger.info(' ' + str(p.arg(0)))
         if p.pred() == "target":
             logger.info(' ' + str(p.arg(0)))
+
+def to_file(termset, outputfile=None):
+    """write (append) the content of the TermSet into a file
+    
+    Args:
+        termset (TermSet): ASP termset
+        outputfile (str, optional): Defaults to None. name of the output file
+    """
+    if outputfile:
+        f = open(outputfile, 'a')
+    else:
+        fd, outputfile = tempfile.mkstemp(suffix='.lp', prefix='meneco_')
+        f = os.fdopen(fd, 'a')
+    for t in termset:
+        f.write(str(t) + '.\n')
+    f.close()
+    return outputfile

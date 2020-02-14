@@ -17,8 +17,6 @@
 
 # -*- coding: utf-8 -*-
 import re
-#from pyasp.asp import *
-import clyngor
 from clyngor import as_pyasp
 from clyngor.as_pyasp import TermSet, Atom
 import xml.etree.ElementTree as etree

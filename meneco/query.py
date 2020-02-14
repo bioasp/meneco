@@ -16,15 +16,10 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 import os
-#from pyasp.term import *
-#from pyasp.asp import *
 import clyngor
 from clyngor import as_pyasp
 from clyngor.as_pyasp import TermSet, Atom
-import tempfile
-
-import logging
-logger = logging.getLogger(__name__)
+from meneco import utils
 
 
 root                      = __file__.rsplit('/', 1)[0]
@@ -101,9 +96,9 @@ completion_prg            = root + '/encodings/completions_all_targets.lp'
 
 
 def get_unproducible(draft, seeds, targets):
-    draft_f  = draft.to_file()
-    seed_f   =  seeds.to_file()
-    target_f = targets.to_file()
+    draft_f  = utils.to_file(draft)
+    seed_f   =  utils.to_file(seeds)
+    target_f = utils.to_file(targets)
     prg      = [unproducible_prg, draft_f, seed_f, target_f ]
     #solver   = Gringo4Clasp()
     options = ''
@@ -118,22 +113,22 @@ def get_unproducible(draft, seeds, targets):
 
 
 def compute_ireactions(instance):
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
     prg        = [ ireaction_prg, instance_f]
     #solver     = Gringo4Clasp()
     best_model = None
 
-    options = ''
-    models = clyngor.solve(prg, options=options)
+    # options = ''
+    models = clyngor.solve(prg)
     for model in models.discard_quotes.by_arity:
         best_model = model
-    os.unlink(instance_f)
+    # os.unlink(instance_f)
 
     output = TermSet()
     for pred in best_model :
         if pred == 'ireaction' :
             for a in best_model[pred] : 
-                output.add(Atom('ireaction( \"' + a[0] +'\", \"' + a[1] + '\")'))
+                output.add(Atom('ireaction(\"' + a[0] +'\",\"' + a[1] + '\")'))
 
     #assert(best_model != None)
     return output
@@ -145,7 +140,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
 
     prg        = [minimal_completion_prg, instance_f]
 
@@ -167,11 +162,11 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
 
     prg        = [minimal_completion_prg, instance_f]
 
-    options    = '--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN --opt-bound='+str(optimum)
+    options    = '--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN,'+str(optimum)
 
     #solver     = Gringo4Clasp(clasp_options=options)
 
@@ -179,7 +174,7 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
         best_model = model
-    os.unlink(instance_f)
+    #os.unlink(instance_f)
     return best_model
 
 
@@ -189,14 +184,14 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
 
     prg        = [minimal_completion_prg, instance_f]
 
-    options    = '--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN --opt-bound='+str(optimum)
+    options    = '--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN,'+str(optimum)
 
     #solver     = Gringo4Clasp(clasp_options=options)
-
+    
     best_model = None
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
@@ -211,11 +206,11 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
 
     prg        = [minimal_completion_prg, instance_f]
 
-    options    = str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN --opt-bound='+str(optimum)
+    options    = str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN,'+str(optimum)
     #solver     = Gringo4Clasp(clasp_options=options)
     
     best_model = None
@@ -233,7 +228,7 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
-    instance_f = instance.to_file()
+    instance_f = utils.to_file(instance)
 
     prg        = [completion_prg, instance_f]
     options    = '--enum-mode cautious --opt-mode=ignore '
