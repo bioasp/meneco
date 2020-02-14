@@ -27,7 +27,7 @@ from clyngor.as_pyasp import TermSet, Atom
 logger = logging.getLogger(__name__)
 
 
-def cmd_meneco():
+def cmd_meneco(argv):
     """Run meneco from shell
     """
     parser = argparse.ArgumentParser()
@@ -48,7 +48,7 @@ def cmd_meneco():
                         action='store_true',
                         default=False)
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     draft_sbml = args.draftnet
     repair_sbml = args.repairnet
     seeds_sbml = args.seeds
@@ -90,7 +90,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
             for a in model[pred, 1]:
                 unproducible_targets_atoms.add(Atom('unproducible_target', ['"'+a[0]+'"']))
                 unproducible_targets_lst.append(a[0])
-    
     logger.info(str(len(unproducible_targets_lst))+' unproducible targets:')
     logger.info("\n".join(unproducible_targets_lst))
 
@@ -108,7 +107,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     logger.info('\nChecking draftnet + repairnet for unproducible targets')
     model = query.get_unproducible(all_reactions, seeds, targets)
-
     unproducible_targets = []
     for pred in model :
         if pred == 'unproducible_target':
@@ -118,7 +116,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     logger.info('  still ' + str(len(unproducible_targets)) + ' unproducible targets:')
     logger.info("\n".join(unproducible_targets))
-
     never_producible = []
     #never_productible_atoms = TermSet()
     for pred in model :
@@ -136,13 +133,11 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     logger.info('\n ' + str(len(reconstructable_targets)) +
                 ' targets to reconstruct:')
-                
     logger.info("\n".join(reconstructable_targets))
 
     if len(reconstructable_targets) == 0:
         utils.clean_up()
         quit()
-
 
 
     essential_reactions = TermSet()
@@ -188,9 +183,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     logger.info('\nComputing one minimal completion to produce all targets')
     one_min_sol = query.get_minimal_completion_size(
         draftnet, repairnet, seeds, reconstructable_targets_atoms)
-    
-    #optimum = one_min_sol[0].score[0]
-    #one_min_sol_lst = one_min_sol[0].to_list()
+
     one_min_sol_lst = []
     min_sol_atoms = TermSet()
     for pred in one_min_sol :
@@ -205,8 +198,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                 str(optimum))
     intersection_sol = query.get_intersection_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
-    #intersection_sol_lst = intersection_sol.to_list()
-    #utils.print_met(intersection_sol_lst)
+
     intersection_sol_lst = []
     for pred in intersection_sol :
         if pred == 'xreaction':
@@ -224,8 +216,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
             for a in one_min_sol[pred]:
                 union_sol_lst.append(a[0]) 
     logger.info("\n".join(union_sol_lst))
-    # union_sol_lst = union_sol.to_list()
-    # utils.print_met(union_sol_lst)
 
     if enumeration:
         logger.info('\nComputing all completions with size ' +
@@ -247,4 +237,4 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
 
 if __name__ == '__main__':
-    cmd_meneco()
+    cmd_meneco(sys.argv[1:])

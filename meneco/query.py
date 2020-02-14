@@ -100,7 +100,6 @@ def get_unproducible(draft, seeds, targets):
     seed_f   =  utils.to_file(seeds)
     target_f = utils.to_file(targets)
     prg      = [unproducible_prg, draft_f, seed_f, target_f ]
-    #solver   = Gringo4Clasp()
     options = ''
     best_model = None
     models = clyngor.solve(prg, options=options)
@@ -115,14 +114,12 @@ def get_unproducible(draft, seeds, targets):
 def compute_ireactions(instance):
     instance_f = utils.to_file(instance)
     prg        = [ ireaction_prg, instance_f]
-    #solver     = Gringo4Clasp()
     best_model = None
 
-    # options = ''
     models = clyngor.solve(prg)
     for model in models.discard_quotes.by_arity:
         best_model = model
-    # os.unlink(instance_f)
+    os.unlink(instance_f)
 
     output = TermSet()
     for pred in best_model :
@@ -130,13 +127,11 @@ def compute_ireactions(instance):
             for a in best_model[pred] : 
                 output.add(Atom('ireaction(\"' + a[0] +'\",\"' + a[1] + '\")'))
 
-    #assert(best_model != None)
     return output
 
 
 def get_minimal_completion_size(draft, repairnet, seeds, targets):
 
-   # draftfact  = String2TermSet('draft("draft")')
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
@@ -145,7 +140,6 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     prg        = [minimal_completion_prg, instance_f]
 
     co         = "--configuration=jumpy --opt-strategy=5"
-    #solver     = Gringo4Clasp(clasp_options=co)
 
     optimum = None
     models = clyngor.solve(prg, options=co)
@@ -158,7 +152,6 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
 
 def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
-    #draftfact  = String2TermSet('draft("draft")')
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
@@ -168,19 +161,16 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode cautious --opt-mode=optN,'+str(optimum)
 
-    #solver     = Gringo4Clasp(clasp_options=options)
-
     best_model = None
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
         best_model = model
-    #os.unlink(instance_f)
+    os.unlink(instance_f)
     return best_model
 
 
 def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
-    #draftfact  = String2TermSet('draft("draft")')
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
@@ -190,7 +180,6 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
     options    = '--configuration jumpy --opt-strategy=5 --enum-mode brave --opt-mode=optN,'+str(optimum)
 
-    #solver     = Gringo4Clasp(clasp_options=options)
     
     best_model = None
     models = clyngor.solve(prg, options=options)
@@ -202,7 +191,6 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
 
 def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0):
 
-    #draftfact  = String2TermSet('draft("draft")')
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
@@ -211,7 +199,6 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     prg        = [minimal_completion_prg, instance_f]
 
     options    = str(nmodels)+' --configuration jumpy --opt-strategy=5 --opt-mode=optN,'+str(optimum)
-    #solver     = Gringo4Clasp(clasp_options=options)
     
     best_model = None
     models = clyngor.solve(prg, options=options)
@@ -224,7 +211,6 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
 
 def get_intersection_of_completions(draft, repairnet, seeds, targets):
 
-    #draftfact  = String2TermSet('draft("draft")')
     instance   = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
     instance   = TermSet(instance.union(ireactions))
@@ -233,7 +219,6 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
     prg        = [completion_prg, instance_f]
     options    = '--enum-mode cautious --opt-mode=ignore '
 
-    #solver     = Gringo4Clasp(clasp_options=options)
     
     best_model = None
     models = clyngor.solve(prg, options=options)
