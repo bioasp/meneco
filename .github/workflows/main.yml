@@ -25,4 +25,5 @@ jobs:
       run: |
         cd toy
         meneco -d draft.sbml -s seeds.sbml -t targets.sbml -r repair.sbml  2>&1 | tee output.log
-        tail -n2 output.log | sort | fmt | tee output_union.log | diff --report-identical-files - expected_union.log
+        tail -n2 output.log | sort | fmt | sed 's/"//g' | tee output_union.log | diff --report-identical-files - expected_union.log
+
