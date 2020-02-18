@@ -18,7 +18,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import sys
-from meneco import query, utils, sbml
+from meneco import utils, sbml, query
 import logging
 import clyngor
 from clyngor import as_pyasp
