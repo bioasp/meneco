@@ -34,5 +34,5 @@ setup(
     # scripts          = ['meneco.py'],
     entry_points={'console_scripts': ['meneco = meneco.__main__:main_meneco']},
     tests_requires=['pytest'],
-    install_requires = ['clyngor_with_clingo']
+    install_requires = ['pyasp == 1.4.3']
 )
