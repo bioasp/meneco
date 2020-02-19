@@ -13,8 +13,9 @@ def test_meneco() :
     one_min_sol = set(['R_CU2tpp', 'R_CLt3_2pp'])
     union_sol = set(['R_CU2tpp', 'R_CLt3_2pp'])
     intersection_sol = set(['R_CU2tpp', 'R_CLt3_2pp'])
-    enumeration_sol = [{'R_CLt3_2pp', 'R_CU2tpp'}, {'R_CLt3_2pp', 'R_CU2tpp'}]
+    enumeration_sol = [{'R_CLt3_2pp', 'R_CU2tpp'}]
 
+    enumeration_sol_result_t = [reaction_ids(l) for l in enumeration_sol_result]
 
     # print(unproducible_targets_result, reconstructable_result, one_min_sol_result)
     # print(union_sol_result, intersection_sol_result, enumeration_sol_result)
@@ -23,6 +24,6 @@ def test_meneco() :
     assert one_min_sol == reaction_ids(one_min_sol_result)
     assert union_sol == reaction_ids(union_sol_result)
     assert intersection_sol == reaction_ids(intersection_sol_result)
-    #assert enumeration_sol == enumeration_sol_result
+    assert enumeration_sol == enumeration_sol_result_t
 
 test_meneco()
