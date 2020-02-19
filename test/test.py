@@ -3,6 +3,9 @@ import sys
 sys.path.append('../')
 from meneco import meneco
 
+def reaction_ids(prediction):
+    return set([p.arg(0) for p in prediction if p.pred() == "xreaction"])
+
 def test_meneco() : 
     unproducible_targets_result, reconstructable_result, one_min_sol_result, intersection_sol_result, union_sol_result, enumeration_sol_result = meneco.run_meneco('../toy/draft.sbml', '../toy/seeds.sbml', '../toy/targets.sbml', '../toy/repair.sbml', True)
     
@@ -18,9 +21,9 @@ def test_meneco() :
     # print(union_sol_result, intersection_sol_result, enumeration_sol_result)
     # print(union_sol_lst, intersection_sol_lst, enumeration_sol_lst)
     assert len(unproducible_targets) == len(unproducible_targets_result)
-    assert one_min_sol == set(one_min_sol_result)
-    assert union_sol == set(union_sol_result)
-    assert intersection_sol == set(intersection_sol_result)
+    assert one_min_sol == reaction_ids(one_min_sol_result)
+    assert union_sol == reaction_ids(union_sol_result)
+    assert intersection_sol == reaction_ids(intersection_sol_result)
     #assert enumeration_sol == enumeration_sol_result
 
 test_meneco()
