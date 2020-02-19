@@ -238,7 +238,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                         model_lst.add(a[0])
                         model_lst_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
                         enumeration_sol_lst.append(model_lst)
-                        enumeration_sol_atom.append(model_lst_atom)
+            enumeration_sol_atom.append(model_lst_atom)
             logger.info("\n".join(model_lst))
         #TODO provide clean lists, not list version of terms in what is returned
     else:
