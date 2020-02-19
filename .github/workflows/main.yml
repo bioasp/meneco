@@ -22,4 +22,4 @@ jobs:
         pip install pytest
     - name: execute test.py on toy example
       run: |
-        py.test test.py 
+        py.test ../test/test.py 
