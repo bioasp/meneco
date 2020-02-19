@@ -1,0 +1,67 @@
+# Files to ignore for meneco ------
+
+
+# Standard os ------------------------
+
+*~
+._*
+.DS_Store
+.directory
+
+
+# Generated for ASP ------------------
+
+asp_py_lextab.py
+asp_py_parsetab.py
+
+asp_py_lextab.py
+	asp_py_parsetab.py
+# Python -----------------------------
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+eggs/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+toxtests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Sphinx documentation
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# SonarQube
+/.scannerwork
