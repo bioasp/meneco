@@ -26,7 +26,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def cmd_meneco():
+def cmd_meneco(argv):
     """Run meneco from shell
     """
     parser = argparse.ArgumentParser()
@@ -47,7 +47,7 @@ def cmd_meneco():
                         action='store_true',
                         default=False)
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     draft_sbml = args.draftnet
     repair_sbml = args.repairnet
     seeds_sbml = args.seeds
@@ -187,4 +187,4 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
 
 if __name__ == '__main__':
-    cmd_meneco()
+    cmd_meneco(sys.argv[1:])
