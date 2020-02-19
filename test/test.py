@@ -17,7 +17,7 @@ def test_meneco() :
     # print(unproducible_targets_result, reconstructable_result, one_min_sol_result)
     # print(union_sol_result, intersection_sol_result, enumeration_sol_result)
     # print(union_sol_lst, intersection_sol_lst, enumeration_sol_lst)
-    assert unproducible_targets == set(unproducible_targets_result)
+    assert len(unproducible_targets) == len(unproducible_targets_result)
     assert reconstructable == set(reconstructable_result)
     assert one_min_sol == set(one_min_sol_result)
     assert union_sol == set(union_sol_result)
