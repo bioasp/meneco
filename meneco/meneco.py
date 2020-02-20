@@ -93,13 +93,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     model = query.get_unproducible(draftnet, targets, seeds)
     sys.stdout.flush()
 
-    # unproducible_targets_lst = []
-    # # unproducible_targets_atoms = TermSet()
-    # for pred in model :
-    #     if pred == 'unproducible_target':
-    #         for a in model[pred, 1]:
-    #             # unproducible_targets_atoms.add(Atom('unproducible_target', ['"'+a[0]+'"']))
-    #             unproducible_targets_lst.append(a[0])
     unproducible_targets_lst = extract_unprod_traget(model)
     logger.info(str(len(unproducible_targets_lst))+' unproducible targets:')
     logger.info("\n".join(unproducible_targets_lst))
@@ -118,20 +111,10 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     logger.info('\nChecking draftnet + repairnet for unproducible targets')
     model = query.get_unproducible(all_reactions, seeds, targets)
     unproducible_targets = extract_unprod_traget(model)
-    # for pred in model :
-    #     if pred == 'unproducible_target':
-    #         for a in model[pred, 1]:
-    #             unproducible_targets.append(a[0])
 
     logger.info('  still ' + str(len(unproducible_targets)) + ' unproducible targets:')
     logger.info("\n".join(unproducible_targets))
-    never_producible = []
-    # never_productible_atoms = TermSet()
-    for pred in model :
-        if pred == 'unproducible_target':
-            for a in model[pred, 1]:
-                # never_productible_atoms.add(Atom('target', ['\"'+a[0]+'\"']))
-                never_producible.append(a[0])
+    never_producible = extract_unprod_traget(model)
 
     reconstructable_targets = set()
     reconstructable_targets_atoms = TermSet()
@@ -158,15 +141,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
         logger.info('\nComputing essential reactions for ' + t)
         essentials = query.get_intersection_of_completions(
             draftnet, repairnet, seeds, single_target)
-        
-        # essentials_to_print = set()
-        # essentials_atoms = TermSet()
-        # for pred in essentials :
-        #     if pred == 'xreaction':
-        #         for a in essentials[pred]:
-        #             essentials_atoms.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
-        #             essentials_to_print.add(a[0])
-        
+
         essentials_to_print, essentials_atoms = extract_xreactions(essentials, True)
 
         essential_reactions_target[t] = essentials_to_print
@@ -196,14 +171,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     one_min_sol = query.get_minimal_completion_size(
         draftnet, repairnet, seeds, reconstructable_targets_atoms)
 
-    # one_min_sol_lst = []
-    # # min_sol_atoms = TermSet()
-    # for pred in one_min_sol :
-    #     if pred == 'xreaction':
-    #         for a in one_min_sol[pred]:
-    #             # min_sol_atoms.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
-    #             one_min_sol_lst.append(a[0])    
-
     one_min_sol_lst = extract_xreactions(one_min_sol, False)
     optimum = len(one_min_sol_lst)
     logger.info("\n".join(one_min_sol_lst))
@@ -213,14 +180,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                 str(optimum))
     intersection_sol = query.get_intersection_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
-    # intersection_sol_lst = []
-    # # intersection_sol_atom = TermSet()
-    # for pred in intersection_sol :
-    #     if pred == 'xreaction':
-    #         for a in intersection_sol[pred]:
-    #             intersection_sol_lst.append(a[0])
-    #             # intersection_sol_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
-    # 
 
     intersection_sol_lst = extract_xreactions(intersection_sol, False)
     logger.info("\n".join(intersection_sol_lst))
@@ -229,13 +188,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                 str(optimum))
     union_sol = query.get_union_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
-    # union_sol_lst = []
-    # # union_sol_atom = TermSet()
-    # for pred in union_sol :
-    #     if pred == 'xreaction':
-    #         for a in union_sol[pred]:
-    #             union_sol_lst.append(a[0])
-    #             # union_sol_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
 
     union_sol_lst = extract_xreactions(union_sol, False)
     logger.info("\n".join(union_sol_lst))
@@ -250,13 +202,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
         for model in enumeration_sol:
             logger.info('Completion ' + str(count) + ': ')
             count += 1
-            # model_lst = set()
-            # # model_lst_atom = TermSet()
-            # for pred in model :
-            #     if pred == "xreaction":
-            #         for a in model[pred]: 
-            #             model_lst.add(a[0])
-            #             # model_lst_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
             model_lst = extract_xreactions(model, False)
             enumeration_sol_lst.append(model_lst)
             logger.info("\n".join(model_lst))
