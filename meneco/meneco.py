@@ -234,13 +234,14 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                     for a in model[pred]: 
                         model_lst.add(a[0])
                         # model_lst_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
-                        enumeration_sol_lst.append(model_lst)
+            enumeration_sol_lst.append(model_lst)
             logger.info("\n".join(model_lst))
         #TODO provide clean lists, not list version of terms in what is returned
     else:
         enumeration_sol_lst = [] 
-
+    print(unproducible_targets_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst)
     return unproducible_targets_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
+
 
 
 if __name__ == '__main__':
