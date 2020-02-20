@@ -140,6 +140,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
 
     essential_reactions = TermSet()
     essential_reactions_to_print = set()
+    essential_reactions_target = {}
     for t in reconstructable_targets:
         single_target = TermSet()
         single_target.add(Atom('target(\"' +t+ '\")'))
@@ -155,11 +156,14 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                     essentials_atoms.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
                     essentials_to_print.add(a[0])
         
+        essential_reactions_target[t] = essentials_to_print
+        
         logger.info(' ' + str(len(essentials_to_print)) + ' essential reactions found:')
         logger.info("\n".join(essentials_to_print))
         essential_reactions = TermSet(essential_reactions.union(essentials_atoms))
         essential_reactions_to_print = set(essential_reactions_to_print.union(essentials_to_print))
     
+    logger.info(essential_reactions_target)
     
     logger.info('\nOverall ' + str(len(essential_reactions_to_print)) +
                 ' essential reactions found.')
@@ -239,7 +243,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
         #TODO provide clean lists, not list version of terms in what is returned
     else:
         enumeration_sol_lst = [] 
-    print(unproducible_targets_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst)
+    
     return unproducible_targets_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
 
 
