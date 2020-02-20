@@ -163,8 +163,6 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
         essential_reactions = TermSet(essential_reactions.union(essentials_atoms))
         essential_reactions_to_print = set(essential_reactions_to_print.union(essentials_to_print))
     
-    logger.info(essential_reactions_target)
-    
     logger.info('\nOverall ' + str(len(essential_reactions_to_print)) +
                 ' essential reactions found.')
     logger.info("\n".join(essential_reactions_to_print))
@@ -244,7 +242,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     else:
         enumeration_sol_lst = [] 
     
-    return unproducible_targets_lst, reconstructable_targets, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
+    return unproducible_targets_lst, reconstructable_targets, essential_reactions_target, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
 
 
 
