@@ -57,16 +57,16 @@ def cmd_meneco(argv):
     run_meneco(draft_sbml, seeds_sbml, targets_sbml,
                repair_sbml, args.enumerate)
 
-def extract_xreactions(model, return_atom=True, return_set = False) :
-    if return_set :
-        lst = set(a[0] for pred in model if pred == 'xreaction' for a in model[pred])
-    else :
-        lst = [a[0] for pred in model if pred == 'xreaction' for a in model[pred]]
+def extract_xreactions(model, return_atom=True) :
+    lst = set(a[0] for pred in model if pred == 'xreaction' for a in model[pred])
     if return_atom : 
         atom = TermSet(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")') for pred in model if pred == 'xreaction' for a in model[pred])
         return lst, atom
     else :
         return lst
+
+def extract_unprod_traget(model) :
+    return set(a[0] for pred in model if pred == 'unproducible_target' for a in model[pred])
 
 def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     """Complete metabolic network by selecting reactions from a database
@@ -93,13 +93,14 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     model = query.get_unproducible(draftnet, targets, seeds)
     sys.stdout.flush()
 
-    unproducible_targets_lst = []
-    # unproducible_targets_atoms = TermSet()
-    for pred in model :
-        if pred == 'unproducible_target':
-            for a in model[pred, 1]:
-                # unproducible_targets_atoms.add(Atom('unproducible_target', ['"'+a[0]+'"']))
-                unproducible_targets_lst.append(a[0])
+    # unproducible_targets_lst = []
+    # # unproducible_targets_atoms = TermSet()
+    # for pred in model :
+    #     if pred == 'unproducible_target':
+    #         for a in model[pred, 1]:
+    #             # unproducible_targets_atoms.add(Atom('unproducible_target', ['"'+a[0]+'"']))
+    #             unproducible_targets_lst.append(a[0])
+    unproducible_targets_lst = extract_unprod_traget(model)
     logger.info(str(len(unproducible_targets_lst))+' unproducible targets:')
     logger.info("\n".join(unproducible_targets_lst))
 
@@ -116,11 +117,11 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     all_reactions = TermSet(all_reactions.union(repairnet))
     logger.info('\nChecking draftnet + repairnet for unproducible targets')
     model = query.get_unproducible(all_reactions, seeds, targets)
-    unproducible_targets = []
-    for pred in model :
-        if pred == 'unproducible_target':
-            for a in model[pred, 1]:
-                unproducible_targets.append(a[0])
+    unproducible_targets = extract_unprod_traget(model)
+    # for pred in model :
+    #     if pred == 'unproducible_target':
+    #         for a in model[pred, 1]:
+    #             unproducible_targets.append(a[0])
 
     logger.info('  still ' + str(len(unproducible_targets)) + ' unproducible targets:')
     logger.info("\n".join(unproducible_targets))
@@ -132,11 +133,11 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
                 # never_productible_atoms.add(Atom('target', ['\"'+a[0]+'\"']))
                 never_producible.append(a[0])
 
-    reconstructable_targets = []
+    reconstructable_targets = set()
     reconstructable_targets_atoms = TermSet()
     for t in unproducible_targets_lst:
         if not (t in never_producible):
-            reconstructable_targets.append(t)
+            reconstructable_targets.add(t)
             reconstructable_targets_atoms.add(Atom('target(\"' +t+ '\")'))
 
     logger.info('\n ' + str(len(reconstructable_targets)) +
@@ -256,7 +257,7 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
             #         for a in model[pred]: 
             #             model_lst.add(a[0])
             #             # model_lst_atom.add(Atom('xreaction(\"' +a[0]+'\",\"'+a[1]+'\")'))
-            model_lst = extract_xreactions(model, False, True)
+            model_lst = extract_xreactions(model, False)
             enumeration_sol_lst.append(model_lst)
             logger.info("\n".join(model_lst))
         #TODO provide clean lists, not list version of terms in what is returned
