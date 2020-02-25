@@ -14,7 +14,7 @@ python setup.py install
 You should always use a virtual environment ([virtualenv](https://virtualenv.pypa.io/en/latest/), [virtualenv wrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)) when using Python
 
 
-# Usage Command line in Python
+# Usage from console
 
 Typical usage is:
 
@@ -43,9 +43,9 @@ optional arguments:
     --enumerate           enumerate all minimal completions
 ```
 
-# Usage Command line interface
+# Calling Meneco from a python script
 
-You can use meneco from python by calling the commande run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (TRUE for the enumeration, else FALSE) :
+You can use meneco from python by calling the command run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (TRUE for the enumeration, else FALSE) :
 
 ```py
 from meneco import meneco
