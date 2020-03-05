@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## v2.0.0 - Unreleased
+## v2.0.0 - 2020, Mar 5
 ### Changed
 - use clyngor_with_clingo instead pyasp-1.4.3
 - requires Python >= 3.6.
