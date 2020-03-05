@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request, check_run]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up python 
+      uses: actions/setup-python@v1
+      with: 
+        python-version: 3.8
+    - name: Prepare environment
+      run: |
+        python -m pip install --upgrade pip
+        python setup.py install
+    - name: install pytest 
+      run: |
+        pip install pytest
+    - name: execute test.py on toy example
+      run: |
+        cd tests
+        py.test test.py 
