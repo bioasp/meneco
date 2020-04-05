@@ -29,22 +29,30 @@ and on MacOS the script is under ``/Users/YOURUSERNAME/Library/Python/3.2/bin``.
 You can download the [meneco user guide](https://bioasp.github.io/meneco/guide/guide.pdf).
 Typical usage is:
 
-	$ meneco.py draftnetwork repairnetwork seeds targets
+```sh
+meneco -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
+```
 
 For more options you can ask for help as follows:
 
-	$ meneco.py --h
-        usage: meneco.py [-h] [--enumerate] draftnetwork repairnetwork seeds targets
+```sh
+meneco --h
+usage: meneco.py [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
+                    [--enumerate]
 
-        positional arguments:
-          draftnetwork   metabolic network in SBML format
-          repairnetwork  metabolic network in SBML format
-          seeds          seeds in SBML format
-          targets        targets in SBML format
-
-        optional arguments:
-          -h, --help     show this help message and exit
-          --enumerate    enumerate all minimal completions
+optional arguments:
+    -h, --help            show this help message and exit
+    -d DRAFTNET, --draftnet DRAFTNET
+                        metabolic network in SBML format
+    -s SEEDS, --seeds SEEDS
+                        seeds in SBML format
+    -t TARGETS, --targets TARGETS
+                        targets in SBML format
+    -r REPAIRNET, --repairnet REPAIRNET
+                        perform network completion using REPAIRNET a metabolic
+                        network in SBML format
+    --enumerate           enumerate all minimal completions
+```
 
 
 ### Usage of library
