@@ -21,6 +21,7 @@ import tempfile
 
 logger = logging.getLogger(__name__)
 
+
 def clean_up():
     if os.path.isfile("parser.out"):
         os.remove("parser.out")
@@ -45,9 +46,10 @@ def print_met(predictions):
         if p.pred() == "target":
             logger.info(' ' + str(p.arg(0)))
 
+
 def to_file(termset, outputfile=None):
     """write (append) the content of the TermSet into a file
-    
+
     Args:
         termset (TermSet): ASP termset
         outputfile (str, optional): Defaults to None. name of the output file
