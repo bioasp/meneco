@@ -60,10 +60,10 @@ def cmd_meneco(argv):
 
 
 def extract_xreactions(model, return_atom=True):
-    lst = set(a[0][1:-1]
+    lst = set(a[0]
               for pred in model if pred == 'xreaction' for a in model[pred])
     if return_atom:
-        atom = TermSet(Atom('xreaction(' + a[0]+','+a[1]+')')
+        atom = TermSet(Atom('xreaction("' + a[0]+'","'+a[1]+'")')
                        for pred in model if pred == 'xreaction' for a in model[pred])
         return lst, atom
     else:
@@ -71,7 +71,7 @@ def extract_xreactions(model, return_atom=True):
 
 
 def extract_unprod_target(model):
-    return set(a[0][1: -1] for pred in model if pred == 'unproducible_target' for a in model[pred])
+    return set(a[0] for pred in model if pred == 'unproducible_target' for a in model[pred])
 
 
 def run_meneco(draftnet: str, seeds: str, targets: str, repairnet: str, enumeration: bool, json: bool):

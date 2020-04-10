@@ -63,7 +63,7 @@ def compute_ireactions(instance):
         if pred == 'ireaction':
             for a in best_model[pred]:
                 output.add(
-                    Atom('ireaction(' + a[0] + ',' + a[1] + ')'))
+                    Atom('ireaction("' + a[0] + '","' + a[1] + '")'))
 
     return output
 
