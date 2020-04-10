@@ -65,3 +65,4 @@ venv.bak/
 
 # SonarQube
 /.scannerwork
+.vscode/settings.json
