@@ -30,7 +30,7 @@ def test_meneco():
         result['Intersection of cardinality minimal completions'])
     assert essential_reactions_target_sol == result['Essential reactions']
     assert enumeration_sol == set(
-        result['All cardinality minimal completions'][1])
+        result['All cardinality minimal completions'][0])
 
 
 test_meneco()
