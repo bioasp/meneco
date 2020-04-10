@@ -16,10 +16,7 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 import os
-import logging
 import tempfile
-
-logger = logging.getLogger(__name__)
 
 
 def clean_up():
@@ -35,16 +32,6 @@ def clean_up():
         os.remove("asp_py_parsetab.py")
     if os.path.isfile("asp_py_parsetab.pyc"):
         os.remove("asp_py_parsetab.pyc")
-
-
-def print_met(predictions):
-    for p in predictions:
-        if p.pred() == "xreaction":
-            logger.info(' ' + str(p.arg(0)))
-        if p.pred() == "unproducible_target":
-            logger.info(' ' + str(p.arg(0)))
-        if p.pred() == "target":
-            logger.info(' ' + str(p.arg(0)))
 
 
 def to_file(termset, outputfile=None):

@@ -19,8 +19,8 @@
 import re
 from clyngor import as_pyasp
 from clyngor.as_pyasp import TermSet, Atom
-import xml.etree.ElementTree as etree
-from xml.etree.ElementTree import XML, fromstring, tostring
+import xml.etree.cElementTree as etree
+from xml.etree.cElementTree import XML, fromstring, tostring
 import logging
 logger = logging.getLogger(__name__)
 

@@ -32,70 +32,6 @@ minimal_completion_wb_prg = root + \
 completion_prg = root + '/encodings/completions_all_targets.lp'
 
 
-# def get_mapping_ireaction(termset):
-#     dict    = {}
-#     revdict = {}
-#     for a in termset:
-#       if a.pred() == "ireaction" :
-#         if not a.arg(0) in dict:
-#           id             = len(dict)
-#           dict[a.arg(0)] = id
-#           revdict[id]    = a.arg(0)
-#     return dict, revdict
-
-
-# def map_reaction_ids(termset, dict):
-#     mapped = TermSet()
-#     for a in termset:
-#       if a.pred() == "reaction" :
-#         if a.arg(0) in dict:
-#           mapped.add(Term('reaction', [str(dict[a.arg(0)]), a.arg(1)]))
-#         else : mapped.add(a)
-
-#       elif a.pred() == "xreaction" :
-#         if a.arg(0) in dict:
-#           mapped.add(Term('xreaction', [str(dict[a.arg(0)]), a.arg(1)]))
-#         else : mapped.add(a)
-
-#       elif a.pred() == "ireaction" :
-#         if a.arg(0) in dict:
-#           mapped.add(Term('ireaction', [str(dict[a.arg(0)]), a.arg(1)]))
-#         else : print("Error: unknown ireaction, query.py line 64")
-
-#       elif a.pred() == "value" :
-#         if a.arg(0) in dict:
-#           mapped.add(Term('value', [str(dict[a.arg(0)]), a.arg(1)]))
-#         else : mapped.add(a)
-
-#       elif a.pred() == "product" :
-#         if a.arg(1) in dict:
-#           mapped.add(Term('product', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
-#         else : mapped.add(a)
-
-#       elif a.pred() == "reactant" :
-#         if a.arg(1) in dict:
-#           mapped.add(Term('reactant', [a.arg(0), str(dict[a.arg(1)]),a.arg(2)]))
-#         else : mapped.add(a)
-
-#       elif a.pred() == "reversible" :
-#         if a.arg(0) in dict:
-#           mapped.add(Term('reversible', [str(dict[a.arg(0)])]))
-#         else : mapped.add(a)
-#       else :
-#         mapped.add(a)
-
-#     return mapped
-
-
-# def unmap_reaction_ids(termset, revdict):
-#     unmapped = TermSet()
-#     for a in termset:
-#       if a.pred() == "xreaction" :
-#         unmapped.add(Term('xreaction', [str(revdict[int(a.arg(0))]), a.arg(1)]))
-
-#     return unmapped
-
-
 def get_unproducible(draft, seeds, targets):
     draft_f = utils.to_file(draft)
     seed_f = utils.to_file(seeds)
@@ -127,7 +63,7 @@ def compute_ireactions(instance):
         if pred == 'ireaction':
             for a in best_model[pred]:
                 output.add(
-                    Atom('ireaction(\"' + a[0] + '\",\"' + a[1] + '\")'))
+                    Atom('ireaction(' + a[0] + ',' + a[1] + ')'))
 
     return output
 
@@ -200,8 +136,8 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
 
     prg = [minimal_completion_prg, instance_f]
 
-    options = '--configuration=handy --opt-strategy=usc,0 --opt-mode=optN,' + \
-        str(optimum)
+    options = '--configuration=handy --opt-strategy=usc,0 --opt-mode=optN,{0}'.format(
+        optimum)
 
     models = clyngor.solve(prg, options=options,
                            nb_model=nmodels).by_arity.discard_quotes
@@ -214,16 +150,19 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
 
     instance = TermSet(draft.union(repairnet).union(targets).union(seeds))
     ireactions = compute_ireactions(instance)
-    instance = TermSet(instance.union(ireactions))
-    instance_f = utils.to_file(instance)
+    if len(ireactions) == 0:
+        return {}
+    else:
+        instance = TermSet(instance.union(ireactions))
+        instance_f = utils.to_file(instance)
 
-    prg = [completion_prg, instance_f]
-    options = '--enum-mode=cautious --opt-mode=ignore '
+        prg = [completion_prg, instance_f]
+        options = '--enum-mode=cautious --opt-mode=ignore '
 
-    best_model = None
-    models = clyngor.solve(prg, options=options)
-    for model in models.discard_quotes.by_arity:
-        best_model = model
+        best_model = None
+        models = clyngor.solve(prg, options=options)
+        for model in models.discard_quotes.by_arity:
+            best_model = model
 
-    os.unlink(instance_f)
-    return best_model
+        os.unlink(instance_f)
+        return best_model

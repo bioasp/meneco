@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
+from clyngor.as_pyasp import TermSet, Atom
+from clyngor import as_pyasp
+import clyngor
 import argparse
 import sys
-from meneco import utils, sbml, query
+import json
 import logging
-import clyngor
-from clyngor import as_pyasp
-from clyngor.as_pyasp import TermSet, Atom
-
+from meneco import utils, sbml, query
 logger = logging.getLogger(__name__)
 
 
@@ -32,11 +32,11 @@ def cmd_meneco(argv):
     """
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-d", "--draftnet",
+    parser.add_argument('-d', '--draftnet',
                         help='metabolic network in SBML format', required=True)
-    parser.add_argument("-s", "--seeds",
+    parser.add_argument('-s', '--seeds',
                         help='seeds in SBML format', required=True)
-    parser.add_argument("-t", "--targets",
+    parser.add_argument('-t', '--targets',
                         help='targets in SBML format', required=True)
 
     parser.add_argument('-r', '--repairnet',
@@ -47,124 +47,141 @@ def cmd_meneco(argv):
                         help='enumerate all minimal completions',
                         action='store_true',
                         default=False)
+    parser.add_argument('--json',
+                        help='produce JSON output',
+                        required=False, action='store_true', default=False)
 
     args = parser.parse_args(argv)
-    draft_sbml = args.draftnet
-    repair_sbml = args.repairnet
-    seeds_sbml = args.seeds
-    targets_sbml = args.targets
 
-    run_meneco(draft_sbml, seeds_sbml, targets_sbml,
-               repair_sbml, args.enumerate)
+    result = run_meneco(args.draftnet, args.seeds, args.targets,
+                        args.repairnet, args.enumerate, args.json)
+    if args.json:
+        print(json.dumps(result))
 
 
 def extract_xreactions(model, return_atom=True):
-    lst = set(a[0] for pred in model if pred ==
-              'xreaction' for a in model[pred])
+    lst = set(a[0][1:-1]
+              for pred in model if pred == 'xreaction' for a in model[pred])
     if return_atom:
-        atom = TermSet(Atom('xreaction(\"' + a[0]+'\",\"'+a[1]+'\")')
+        atom = TermSet(Atom('xreaction(' + a[0]+','+a[1]+')')
                        for pred in model if pred == 'xreaction' for a in model[pred])
         return lst, atom
     else:
         return lst
 
 
-def extract_unprod_traget(model):
-    return set(a[0] for pred in model if pred == 'unproducible_target' for a in model[pred])
+def extract_unprod_target(model):
+    return set(a[0][1: -1] for pred in model if pred == 'unproducible_target' for a in model[pred])
 
 
-def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
+def run_meneco(draftnet: str, seeds: str, targets: str, repairnet: str, enumeration: bool, json: bool):
     """Complete metabolic network by selecting reactions from a database
 
     Args:
-        draft_sbml (str): SBML file name of metabolic network
-        seeds_sbml (str): SBML file name seeds
-        targets_sbml (str): SBML file name of targets
-        repair_sbml (str): SBML file name of repair database
+        draftnet: SBML file name of metabolic network
+        seeds: SBML file name seeds
+        targets: SBML file name of targets
+        repairnet: SBML file name of repair database
     """
-    logger.info('Reading draft network from ' + draft_sbml)
-    draftnet = sbml.readSBMLnetwork(draft_sbml, 'draft')
+    result = {}
+
+    logger.info('Reading draft network ...')
+    result['Draft network file'] = draftnet
+    if not json:
+        print('Draft network file: {0}'.format(draftnet))
+    draftnet = sbml.readSBMLnetwork(draftnet, 'draft')
     # draftnet.to_file("draftnet.lp")
 
-    logger.info('Reading seeds from ' + seeds_sbml)
-    seeds = sbml.readSBMLseeds(seeds_sbml)
+    logger.info('Reading seeds ...')
+    result['Seeds file'] = seeds
+    if not json:
+        print('Seeds file: {0}'.format(seeds))
+    seeds = sbml.readSBMLseeds(seeds)
     # seeds.to_file("seeds.lp")
 
-    logger.info('Reading targets from ' + targets_sbml)
-    targets = sbml.readSBMLtargets(targets_sbml)
+    logger.info('Reading targets ...')
+    result['Targets file'] = targets
+    if not json:
+        print('Targets file: {0}\n'.format(targets))
+    targets = sbml.readSBMLtargets(targets)
     # targets.to_file("targets.lp")
 
-    logger.info('\nChecking draftnet for unproducible targets')
+    logger.info('Checking draftnet for unproducible targets')
     model = query.get_unproducible(draftnet, targets, seeds)
-    sys.stdout.flush()
 
-    unproducible_targets_lst = extract_unprod_traget(model)
-    logger.info(str(len(unproducible_targets_lst))+' unproducible targets:')
-    logger.info("\n".join(unproducible_targets_lst))
+    unproducible_targets_lst = extract_unprod_target(model)
 
-    if repair_sbml == None:
-        return(unproducible_targets_lst)
+    result['Unproducible Targets'] = list(unproducible_targets_lst)
+    if not json:
+        print('{0} unproducible targets:\n\t{1}\n'.format(
+            len(unproducible_targets_lst), '\n\t'.join(unproducible_targets_lst)))
 
-    logger.info('\nReading repair network from ' + repair_sbml)
-    repairnet = sbml.readSBMLnetwork(repair_sbml, 'repairnet')
+    if repairnet == None:
+        return result
+
+    logger.info('Reading repair db ...')
+    result['Repair db file'] = repairnet
+    if not json:
+        print('Repair db file: {0}\n'.format(repairnet))
+    repairnet = sbml.readSBMLnetwork(repairnet, 'repairnet')
     # repairnet.to_file("repairnet.lp")
-    sys.stdout.flush()
-    logger.info('done')
 
     all_reactions = draftnet
     all_reactions = TermSet(all_reactions.union(repairnet))
-    logger.info('\nChecking draftnet + repairnet for unproducible targets')
+    logger.info('Checking draftnet + repairnet for unproducible targets')
     model = query.get_unproducible(all_reactions, seeds, targets)
-    unproducible_targets = extract_unprod_traget(model)
+    never_producible = extract_unprod_target(model)
 
-    logger.info('  still ' + str(len(unproducible_targets)) +
-                ' unproducible targets:')
-    logger.info("\n".join(unproducible_targets))
-    never_producible = extract_unprod_traget(model)
+    result['Unreconstructable targets'] = list(never_producible)
+    if not json:
+        print('Still {0} unreconstructable targets:\n\t{1}\n'.format(
+            len(never_producible), '\n\t'.join(never_producible)))
 
     reconstructable_targets = set()
     reconstructable_targets_atoms = TermSet()
     for t in unproducible_targets_lst:
         if not (t in never_producible):
             reconstructable_targets.add(t)
-            reconstructable_targets_atoms.add(Atom('target(\"' + t + '\")'))
+            reconstructable_targets_atoms.add(Atom('target("' + t + '")'))
 
-    logger.info('\n ' + str(len(reconstructable_targets)) +
-                ' targets to reconstruct:')
-    logger.info("\n".join(reconstructable_targets))
+    result['Reconstructable targets'] = list(reconstructable_targets)
+    if not json:
+        print('{0} reconstructable targets:\n\t{1}\n'.format(
+            len(reconstructable_targets), '\n\t'.join(reconstructable_targets)))
 
     if len(reconstructable_targets) == 0:
         utils.clean_up()
-        quit()
+        return result
 
     essential_reactions = TermSet()
     essential_reactions_to_print = set()
     essential_reactions_target = {}
     for t in reconstructable_targets:
         single_target = TermSet()
-        single_target.add(Atom('target(\"' + t + '\")'))
-        logger.info('\nComputing essential reactions for ' + t)
+        single_target.add(Atom('target("' + t + '")'))
+        logger.info('Computing essential reactions for ' + t)
         essentials = query.get_intersection_of_completions(
             draftnet, repairnet, seeds, single_target)
 
         essentials_to_print, essentials_atoms = extract_xreactions(
             essentials, True)
 
-        essential_reactions_target[t] = essentials_to_print
+        essential_reactions_target[t] = list(essentials_to_print)
+        if not json:
+            print('{0} essential reactions for target {1}:\n\t{2}\n'.format(
+                len(essentials_to_print), t, '\n\t'.join(essentials_to_print)))
 
-        logger.info(' ' + str(len(essentials_to_print)) +
-                    ' essential reactions found:')
-        logger.info("\n".join(essentials_to_print))
         essential_reactions = TermSet(
             essential_reactions.union(essentials_atoms))
         essential_reactions_to_print = set(
             essential_reactions_to_print.union(essentials_to_print))
 
-    logger.info('\nOverall ' + str(len(essential_reactions_to_print)) +
-                ' essential reactions found.')
-    logger.info("\n".join(essential_reactions_to_print))
+    result['Essential reactions'] = essential_reactions_target
+    if not json:
+        print('Overall {0} essential reactions found:\n\t{1}\n'.format(
+            len(essential_reactions_to_print), '\n\t'.join(essential_reactions_to_print)))
 
-    logger.info('\nAdding essential reactions to network.')
+    logger.info('Adding essential reactions to network')
     draftnet = TermSet(draftnet.union(essential_reactions))
 
     utils.clean_up()
@@ -174,48 +191,60 @@ def run_meneco(draft_sbml, seeds_sbml, targets_sbml, repair_sbml, enumeration):
     # unproducible_targets.to_file("targets.lp")
     # seeds.to_file("seeds.lp")
 
-    logger.info('\nComputing one minimal completion to produce all targets')
+    logger.info('Computing one minimal completion to produce all targets')
     one_min_sol = query.get_minimal_completion_size(
         draftnet, repairnet, seeds, reconstructable_targets_atoms)
 
     one_min_sol_lst = extract_xreactions(one_min_sol, False)
     optimum = len(one_min_sol_lst)
-    logger.info("\n".join(one_min_sol_lst))
 
-    logger.info('\nComputing common reactions in all completion with size ' +
-                str(optimum))
+    result['One minimal completion'] = list(one_min_sol_lst)
+    if not json:
+        print('One minimal completion of size {0}:\n\t{1}\n'.format(
+            len(one_min_sol_lst), '\n\t'.join(one_min_sol_lst)))
+
+    logger.info(
+        'Computing common reactions in all completion with size {0}'.format(optimum))
     intersection_sol = query.get_intersection_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
 
     intersection_sol_lst = extract_xreactions(intersection_sol, False)
-    logger.info("\n".join(intersection_sol_lst))
 
-    logger.info('\nComputing union of reactions from all completion with size ' +
-                str(optimum))
+    result['Intersection of cardinality minimal completions'] = list(
+        intersection_sol_lst)
+    if not json:
+        print('Intersection of cardinality minimal completions:\n\t{0}\n'.format(
+            '\n\t'.join(intersection_sol_lst)))
+
+    logger.info(
+        'Computing union of reactions from all completion with size {0}'.format(optimum))
     union_sol = query.get_union_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
 
     union_sol_lst = extract_xreactions(union_sol, False)
-    logger.info("\n".join(union_sol_lst))
+
+    result['Union of cardinality minimal completions'] = list(union_sol_lst)
+    if not json:
+        print('Union of cardinality minimal completions:\n\t{0}\n'.format(
+            '\n\t'.join(union_sol_lst)))
 
     if enumeration:
-        logger.info('\nComputing all completions with size ' +
-                    str(optimum))
+        logger.info('Computing all completions with size {0}'.format(optimum))
         enumeration_sol = query.get_optimal_completions(
             draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum)
         count = 1
         enumeration_sol_lst = []
         for model in enumeration_sol:
-            logger.info('Completion ' + str(count) + ': ')
-            count += 1
             model_lst = extract_xreactions(model, False)
-            enumeration_sol_lst.append(model_lst)
-            logger.info("\n".join(model_lst))
-        # TODO provide clean lists, not list version of terms in what is returned
-    else:
-        enumeration_sol_lst = []
+            enumeration_sol_lst.append(list(model_lst))
 
-    return unproducible_targets_lst, reconstructable_targets, essential_reactions_target, one_min_sol_lst, intersection_sol_lst, union_sol_lst, enumeration_sol_lst
+            if not json:
+                print('Completion {0}:\n\t{1}\n'.format(
+                    count, '\n\t'.join(model_lst)))
+            count += 1
+        result['All cardinality minimal completions'] = enumeration_sol_lst
+
+    return result
 
 
 if __name__ == '__main__':

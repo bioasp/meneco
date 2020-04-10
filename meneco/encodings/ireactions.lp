@@ -10,14 +10,6 @@
 % find minimal set of xreactions such that xscope contains targets in pscope
 
 % what is producible by the original network
-
-  samenames(R,N1,N2) :- reaction(R,N1),draft(N1),N1!=N2,reaction(R,N2).
-  samereactants(R) :- samenames(R,N1,N2), reactant(M2,R,N1): reactant(M2,R,N2).
-  sameproducts(R) :- samenames(R,N1,N2), product(M2,R,N1): product(M2,R,N2).
-  same(R):- samenames(R,N1,N2), samereactants(R), sameproducts(R), reversible(R,N1), reversible(R,N2).
-  same(R):- samenames(R,N1,N2), samereactants(R), sameproducts(R), not reversible(R,N1), not reversible(R,N2).
-
-
   dscope(M) :- seed(M).
 
   dscope(M) :- product(M,R,N), reaction(R,N), draft(N),
@@ -38,48 +30,31 @@
 
 % what are the interesting reactions
 
-  interesting(M) :- target(M), not dscope(M), pscope(M).
+  bwd_interesting(M) :- target(M), not dscope(M), pscope(M).
 
-  interesting(M) :- reactant(M,R,N), not dscope(M), iireaction(R,N).
+  bwd_interesting(M) :- reactant(M,R,N), not dscope(M), bwd_reaction(R,N).
 
-  interesting(M) :- product(M,R,N), not dscope(M), iireaction(R,N), reversible(R).
+  bwd_interesting(M) :- product(M,R,N), not dscope(M), bwd_reaction(R,N), reversible(R).
 
-  iireaction(R,N) :- interesting(M), product(M,R,N), reaction(R,N).
-  iireaction(R,N) :- interesting(M), reactant(M,R,N), reaction(R,N), reversible(R).
+  bwd_reaction(R,N) :- bwd_interesting(M), product(M,R,N), reaction(R,N).
+  bwd_reaction(R,N) :- bwd_interesting(M), reactant(M,R,N), reaction(R,N), reversible(R).
 
 
-  binteresting(M) :- dscope(M).
+  fwd_interesting(M) :- dscope(M).
 
-  binteresting(M) :- product(M,R,N),  bireaction(R,N).
-  binteresting(M) :- reactant(M,R,N), bireaction(R,N), reversible(R).
+  fwd_interesting(M) :- product(M,R,N),  fwd_reaction(R,N).
+  fwd_interesting(M) :- reactant(M,R,N), fwd_reaction(R,N), reversible(R).
 
-  bireaction(R,N) :- binteresting(M), reactant(M,R,N), product(M2,R,N), not dscope(M2), reaction(R,N).
-  bireaction(R,N) :- binteresting(M), product(M,R,N), reactant(M2,R,N), not dscope(M2), reaction(R,N), reversible(R).
+  fwd_reaction(R,N) :- fwd_interesting(M), reactant(M,R,N), product(M2,R,N), not dscope(M2), reaction(R,N).
+  fwd_reaction(R,N) :- fwd_interesting(M), product(M,R,N), reactant(M2,R,N), not dscope(M2), reaction(R,N), reversible(R).
 
   % take care of reactions that produce something from nothing
   has_reactant(R) :- reactant(M,R,N).
   has_product(R)  :- product(M,R,N).
-  bireaction(R,N) :- product(M,R,N), not has_reactant(R), not dscope(M), reaction(R,N).
-  bireaction(R,N) :- reactant(M,R,N), not has_product(R), not dscope(M), reaction(R,N), reversible(R).
+  fwd_reaction(R,N) :- product(M,R,N), not has_reactant(R), not dscope(M), reaction(R,N).
+  fwd_reaction(R,N) :- reactant(M,R,N), not has_product(R), not dscope(M), reaction(R,N), reversible(R).
 
 
- ireaction(R,N) :- iireaction(R,N), bireaction(R,N), not same(R).
-%  ireaction(R,N) :- iireaction(R,N), bireaction(R,N), not draft(N).
-
-%  iscope(M) :- seed(M).
-
-%  iscope(M) :- product(M,R,N), reaction(R,N), draft(N),
-%               iscope(M2) : reactant(M2,R,N).
-
-%  iscope(M) :- reactant(M,R,N), reaction(R,N), draft(N), reversible(R),
-%               iscope(M2) : product(M2,R,N).
-
-%  iscope(M) :- product(M,R,N), ireaction(R,N),
-%               iscope(M2) : reactant(M2,R,N).
-
-%  iscope(M) :- reactant(M,R,N), ireaction(R,N), reversible(R),
-%               iscope(M2) : product(M2,R,N).
-
-%:- target(X), pscope(X), not iscope(X).
+ ireaction(R,N) :- bwd_reaction(R,N), fwd_reaction(R,N).
 
 #show ireaction/2.
