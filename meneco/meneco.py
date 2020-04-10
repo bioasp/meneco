@@ -111,7 +111,7 @@ def run_meneco(draftnet: str, seeds: str, targets: str, repairnet: str, enumerat
 
     unproducible_targets_lst = extract_unprod_target(model)
 
-    result['Unproducible Targets'] = list(unproducible_targets_lst)
+    result['Unproducible targets'] = list(unproducible_targets_lst)
     if not json:
         print('{0} unproducible targets:\n\t{1}\n'.format(
             len(unproducible_targets_lst), '\n\t'.join(unproducible_targets_lst)))
