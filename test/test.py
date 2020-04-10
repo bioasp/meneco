@@ -17,7 +17,7 @@ def test_meneco():
     one_min_sol = ['R_CU2tpp', 'R_CLt3_2pp']
     union_sol = ['R_CU2tpp', 'R_CLt3_2pp']
     intersection_sol = ['R_CU2tpp', 'R_CLt3_2pp']
-    enumeration_sol = [['R_CLt3_2pp', 'R_CU2tpp']]
+    enumeration_sol = set(['R_CLt3_2pp', 'R_CU2tpp'])
 
     # enumeration_sol_result_t = [reaction_ids(
     #     l) for l in enumeration_sol_result]
@@ -31,7 +31,8 @@ def test_meneco():
         result['Union of cardinality minimal completions'])
     assert intersection_sol == reaction_ids(
         result['Intersection of cardinality minimal completions'])
-    assert enumeration_sol == result['All cardinality minimal completions']
+    assert enumeration_sol == set(
+        result['All cardinality minimal completions'][0])
 
 
 test_meneco()
