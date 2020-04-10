@@ -16,7 +16,7 @@ def test_meneco():
     intersection_sol = set(['R_CU2tpp', 'R_CLt3_2pp'])
     essential_reactions_target_sol = {
         'M_cu2_c': ['R_CU2tpp'], 'M_cl_c': ['R_CLt3_2pp']}
-    enumeration_sol = [['R_CU2tpp', 'R_CLt3_2pp']]
+    enumeration_sol = set(['R_CU2tpp', 'R_CLt3_2pp'])
 
     # print(target_ids(reconstructable_result))
     # print(unproducible_targets_result, reconstructable_result, one_min_sol_result)
@@ -29,7 +29,8 @@ def test_meneco():
     assert intersection_sol == set(
         result['Intersection of cardinality minimal completions'])
     assert essential_reactions_target_sol == result['Essential reactions']
-    assert enumeration_sol == result['All cardinality minimal completions']
+    assert enumeration_sol == set(
+        result['All cardinality minimal completions'][0])
 
 
 test_meneco()
