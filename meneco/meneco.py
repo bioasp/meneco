@@ -56,7 +56,7 @@ def cmd_meneco(argv):
     result = run_meneco(args.draftnet, args.seeds, args.targets,
                         args.repairnet, args.enumerate, args.json)
     if args.json:
-        print(json.dumps(result))
+        print(json.dumps(result, indent=4))
 
 
 def extract_xreactions(model, return_atom=True):
