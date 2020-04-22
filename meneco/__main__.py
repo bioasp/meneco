@@ -7,5 +7,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-if __name__ == "__main__":
+def main_meneco(args=None):
     cmd_meneco(sys.argv[1:])
+
+if __name__ == "__main__":
+    main_meneco()

@@ -26,22 +26,22 @@ meneco -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
 For more options you can ask for help as follows:
 
 ```sh
-meneco --h
-usage: meneco.py [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
-                    [--enumerate]
+usage: meneco [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
+                   [--enumerate] [--json]
 
 optional arguments:
-    -h, --help            show this help message and exit
-    -d DRAFTNET, --draftnet DRAFTNET
+  -h, --help            show this help message and exit
+  -d DRAFTNET, --draftnet DRAFTNET
                         metabolic network in SBML format
-    -s SEEDS, --seeds SEEDS
+  -s SEEDS, --seeds SEEDS
                         seeds in SBML format
-    -t TARGETS, --targets TARGETS
+  -t TARGETS, --targets TARGETS
                         targets in SBML format
-    -r REPAIRNET, --repairnet REPAIRNET
+  -r REPAIRNET, --repairnet REPAIRNET
                         perform network completion using REPAIRNET a metabolic
                         network in SBML format
-    --enumerate           enumerate all minimal completions
+  --enumerate           enumerate all minimal completions
+  --json                produce JSON output
 ```
 
 # Calling Meneco from a python script
@@ -49,8 +49,14 @@ optional arguments:
 You can use meneco from python by calling the command run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (TRUE for the enumeration, else FALSE) :
 
 ```py
-from meneco import meneco
-run_meneco("draftnetwork.sbml", "seeds.sbml", "targets.sbml", "repairnetwork.sbml", TRUE)
+from meneco.meneco import run_meneco
+
+result = run_meneco(draftnet="toy/draft.sbml", 
+                seeds="toy/seeds.sbml", 
+                targets="toy/targets.sbml", 
+                repairnet="toy/repair.sbml", 
+                enumeration=False, 
+                json=True)
 ```
 
 The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution. 
