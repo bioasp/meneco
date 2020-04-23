@@ -36,7 +36,7 @@
 
 % repair
 % choose interesting reactions to extend the network.
-% dont extend with already existing reactions.
+% don't extend with already existing reactions.
 
   L{ xreaction(R,N) : ireaction(R,N) }U :- ub(U),lb(L).
 

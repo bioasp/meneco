@@ -16,10 +16,8 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 import os
-import logging
 import tempfile
 
-logger = logging.getLogger(__name__)
 
 def clean_up():
     if os.path.isfile("parser.out"):
@@ -36,18 +34,9 @@ def clean_up():
         os.remove("asp_py_parsetab.pyc")
 
 
-def print_met(predictions):
-    for p in predictions:
-        if p.pred() == "xreaction":
-            logger.info(' ' + str(p.arg(0)))
-        if p.pred() == "unproducible_target":
-            logger.info(' ' + str(p.arg(0)))
-        if p.pred() == "target":
-            logger.info(' ' + str(p.arg(0)))
-
 def to_file(termset, outputfile=None):
     """write (append) the content of the TermSet into a file
-    
+
     Args:
         termset (TermSet): ASP termset
         outputfile (str, optional): Defaults to None. name of the output file

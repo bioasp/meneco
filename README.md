@@ -26,22 +26,22 @@ meneco -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
 For more options you can ask for help as follows:
 
 ```sh
-meneco --h
-usage: meneco.py [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
-                    [--enumerate]
+usage: meneco [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
+                   [--enumerate] [--json]
 
 optional arguments:
-    -h, --help            show this help message and exit
-    -d DRAFTNET, --draftnet DRAFTNET
+  -h, --help            show this help message and exit
+  -d DRAFTNET, --draftnet DRAFTNET
                         metabolic network in SBML format
-    -s SEEDS, --seeds SEEDS
+  -s SEEDS, --seeds SEEDS
                         seeds in SBML format
-    -t TARGETS, --targets TARGETS
+  -t TARGETS, --targets TARGETS
                         targets in SBML format
-    -r REPAIRNET, --repairnet REPAIRNET
+  -r REPAIRNET, --repairnet REPAIRNET
                         perform network completion using REPAIRNET a metabolic
                         network in SBML format
-    --enumerate           enumerate all minimal completions
+  --enumerate           enumerate all minimal completions
+  --json                produce JSON output
 ```
 
 # Calling Meneco from a python script
@@ -50,7 +50,13 @@ You can use meneco from python by calling the command run_meneco() with the path
 
 ```py
 from meneco import run_meneco
-run_meneco("draftnetwork.sbml", "seeds.sbml", "targets.sbml", "repairnetwork.sbml", True)
+
+result = run_meneco(draftnet="toy/draft.sbml", 
+                seeds="toy/seeds.sbml", 
+                targets="toy/targets.sbml", 
+                repairnet="toy/repair.sbml", 
+                enumeration=False, 
+                json=True)
 ```
 
 The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True). 
@@ -64,16 +70,15 @@ For a guided example, see a demonstration IPython [Notebook](http://nbviewer.jup
 
 Please cite the following paper when using Meneco:
 
-**S. Prigent et al., “Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks,” PLOS Computational Biology, vol. 13, no. 1, p. e1005276, Jan. 2017.**
+**S. Prigent et al., “Meneco, a Topology-Based Gap-Filling Tool Applicable to Degraded Genome-Wide Metabolic Networks,” PLOS Computational Biology, vol. 13, no. 1, p. e1005276, Jan. 2017. [https://doi.org/10.1371/journal.pcbi.1005276](https://doi.org/10.1371/journal.pcbi.1005276)**
 
 The concepts underlying Meneco is described in this paper:
 
-T. Schaub and S. Thiele, “Metabolic network expansion with answer set programming,” in Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics), 2009, vol. 5649 LNCS, pp. 312–326.
+T. Schaub and S. Thiele, “Metabolic network expansion with answer set programming,” in Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics), 2009, vol. 5649 LNCS, pp. 312–326. [https://doi.org/10.1007/978-3-642-02846-5_27](https://doi.org/10.1007/978-3-642-02846-5_27)
 
 A first application of the method was presented in:
 
-G. Collet et al., “Extending the Metabolic Network of Ectocarpus Siliculosus Using Answer Set Programming,” in LPNMR 2013: Logic Programming and Nonmonotonic Reasoning, 2013, pp. 245–256.
-
+G. Collet et al., “Extending the Metabolic Network of Ectocarpus Siliculosus Using Answer Set Programming,” in LPNMR 2013: Logic Programming and Nonmonotonic Reasoning, 2013, pp. 245–256. [https://doi.org/10.1007/978-3-642-40564-8_25](https://doi.org/10.1007/978-3-642-40564-8_25)
 
 # Samples
 
