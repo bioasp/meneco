@@ -46,7 +46,7 @@ optional arguments:
 
 # Calling Meneco from a python script
 
-You can use meneco from python by calling the command run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (TRUE for the enumeration, else FALSE) :
+You can use meneco from python by calling the command run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (True for the enumeration, else False) :
 
 ```py
 from meneco.meneco import run_meneco
@@ -59,7 +59,7 @@ result = run_meneco(draftnet="toy/draft.sbml",
                 json=True)
 ```
 
-The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution. 
+The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True). 
 
 # Usage Library
 
