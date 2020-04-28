@@ -1,6 +1,7 @@
 % inputs from the met_net
 % draft(Network).
 % reaction(Reaction,Network).
+% reversible(Reaction,Network).
 % reactant(Species,Reaction).
 % product(Species,Reaction).
 % seed(Species).
@@ -17,7 +18,7 @@
   dscope(M) :- product(M,R,N), reaction(R,N), draft(N),
                dscope(M2) : reactant(M2,R,N).
 
-  dscope(M) :- reactant(M,R,N), reaction(R,N), draft(N), reversible(R),
+  dscope(M) :- reactant(M,R,N), reaction(R,N), draft(N), reversible(R,N),
                dscope(M2) : product(M2,R,N).
 
 % what is producible with all reactions
@@ -27,7 +28,7 @@
   pscope(M) :- product(M,R,N), reaction(R,N),
                pscope(M2) : reactant(M2,R,N).
 
-  pscope(M) :- reactant(M,R,N), reaction(R,N), reversible(R),
+  pscope(M) :- reactant(M,R,N), reaction(R,N), reversible(R,N),
                pscope(M2) : product(M2,R,N).
 
 % what are the interesting reactions
@@ -45,7 +46,7 @@
 % no xreaction if not all reactants in xscope
 
   oreaction(R,N) :- reaction(R,N), not draft(N), xscope(M) : reactant(M,R,N).
-  oreaction(R,N) :- reaction(R,N), reversible(R), not draft(N), xscope(M) : product(M,R,N).
+  oreaction(R,N) :- reaction(R,N), reversible(R,N), not draft(N), xscope(M) : product(M,R,N).
 
   :- xreaction(R,N), not oreaction(R,N).
 
@@ -57,13 +58,13 @@
   xscope(M) :- product(M,R,N), reaction(R,N), draft(N),
                xscope(M2) : reactant(M2,R,N).
 
-  xscope(M) :- reactant(M,R,N), reaction(R,N), draft(N), reversible(R),
+  xscope(M) :- reactant(M,R,N), reaction(R,N), draft(N), reversible(R,N),
                xscope(M2) : product(M2,R,N).
 
   xscope(M) :- product(M,R,N), xreaction(R,N),
                xscope(M2) : reactant(M2,R,N).
 
-  xscope(M) :- reactant(M,R,N), xreaction(R,N), reversible(R),
+  xscope(M) :- reactant(M,R,N), xreaction(R,N), reversible(R,N),
                xscope(M2) : product(M2,R,N).               
                
 
@@ -89,11 +90,11 @@
 % prohibit xreactions that produce nothing used by an operable reaction
 
   opreaction(R,N) :- reaction(R,N), xscope(M) : reactant(M,R,N).
-  opreaction(R,N) :- reaction(R,N),reversible(R), xscope(M) : product(M,R,N).
+  opreaction(R,N) :- reaction(R,N),reversible(R,N), xscope(M) : product(M,R,N).
 
   used(M) :- opreaction(R,N), reactant(M,R,N).
-  used(M) :- opreaction(R,N), reversible(R), product(M,R,N).
+  used(M) :- opreaction(R,N), reversible(R,N), product(M,R,N).
   used(M) :- target(M).
-  :- xreaction(R,N), not reversible(R), not used(M) : product(M,R,N).
+  :- xreaction(R,N), not reversible(R,N), not used(M) : product(M,R,N).
 
 #show xreaction/2.

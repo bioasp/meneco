@@ -13,7 +13,7 @@
   pscope(M) :- product(M,R,N), reaction(R,N),
                pscope(M2) : reactant(M2,R,N).
 
-  pscope(M) :- reactant(M,R,N), reaction(R,N), reversible(R),
+  pscope(M) :- reactant(M,R,N), reaction(R,N), reversible(R,N),
                pscope(M2) : product(M2,R,N).
 
 

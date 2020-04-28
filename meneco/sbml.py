@@ -126,7 +126,8 @@ def readSBMLnetwork(filename, name):
             lpfacts.add(
                 Atom('reaction', ["\""+reactionId+"\"", "\""+name+"\""]))
             if(e.attrib.get("reversible") == "true"):
-                lpfacts.add(Atom('reversible', ["\""+reactionId+"\""]))
+                lpfacts.add(
+                    Atom('reversible', ["\""+reactionId+"\"", "\""+name+"\""]))
 
             listOfReactants = get_listOfReactants(e)
             if listOfReactants == None:
@@ -170,7 +171,8 @@ def readSBMLnetwork_with_score(filename, name):
             lpfacts.add(
                 Atom('reaction', ["\""+reactionId+"\"", "\""+name+"\""]))
             if(e.attrib.get("reversible") == "true"):
-                lpfacts.add(Atom('reversible', ["\""+reactionId+"\""]))
+                lpfacts.add(
+                    Atom('reversible', ["\""+reactionId+"\"", "\""+name+"\""]))
 
             listOfReactants = get_listOfReactants(e)
             if listOfReactants == None:

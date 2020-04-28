@@ -107,7 +107,7 @@ def run_meneco(draftnet: str, seeds: str, targets: str, repairnet: str, enumerat
     # targets.to_file("targets.lp")
 
     logger.info('Checking draftnet for unproducible targets')
-    model = query.get_unproducible(draftnet, targets, seeds)
+    model = query.get_unproducible(draftnet, seeds, targets)
 
     unproducible_targets_lst = extract_unprod_target(model)
 
@@ -115,7 +115,7 @@ def run_meneco(draftnet: str, seeds: str, targets: str, repairnet: str, enumerat
     if not json:
         print('{0} unproducible targets:\n\t{1}\n'.format(
             len(unproducible_targets_lst), '\n\t'.join(unproducible_targets_lst)))
-    
+
     if len(unproducible_targets_lst) == 0:
         utils.clean_up()
         return result
