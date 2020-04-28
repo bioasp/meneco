@@ -113,10 +113,3 @@
 #minimize { 1@1, R,N : xreaction(R,N) ; 0@1}.
 
 #show xreaction/2.
-
-bla(M) :- target(M), pscope(M), xscope(M).
-#show bla/1.
-blu(M) :- target(M), dscope(M).
-#show blu/1.
-#show draft/1.
-
