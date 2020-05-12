@@ -1,9 +1,11 @@
 [![PyPI version](https://img.shields.io/pypi/v/meneco.svg)](https://pypi.org/project/meneco/)
+
 # Installation
 
 Requires **Python >= 3.6**
 
 Required packages (starting from version 2.0 of the package):
+
 * [``Clyngor``](https://github.com/Aluriak/clyngor) or [``Clyngor_with_clingo``](https://github.com/Aluriak/clyngor-with-clingo) that includes the solvers
 
 You can install Meneco by running:
@@ -13,7 +15,6 @@ python setup.py install
 ```
 
 You should always use a virtual environment ([virtualenv](https://virtualenv.pypa.io/en/latest/), [virtualenv wrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)) when using Python
-
 
 # Usage from console
 
@@ -25,7 +26,7 @@ meneco -d draftnetwork.sbml -s seeds.sbml -t targets.sbml -r repairnetwork.sbml
 
 For more options you can ask for help as follows:
 
-```sh
+```text
 usage: meneco [-h] -d DRAFTNET -s SEEDS -t TARGETS [-r REPAIRNET]
                    [--enumerate] [--json]
 
@@ -51,20 +52,19 @@ You can use meneco from python by calling the command run_meneco() with the path
 ```py
 from meneco import run_meneco
 
-result = run_meneco(draftnet="toy/draft.sbml", 
-                seeds="toy/seeds.sbml", 
-                targets="toy/targets.sbml", 
-                repairnet="toy/repair.sbml", 
-                enumeration=False, 
+result = run_meneco(draftnet="toy/draft.sbml",
+                seeds="toy/seeds.sbml",
+                targets="toy/targets.sbml",
+                repairnet="toy/repair.sbml",
+                enumeration=False,
                 json=True)
 ```
 
-The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True). 
+The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True).
 
 # Usage Library
 
 For a guided example, see a demonstration IPython [Notebook](http://nbviewer.jupyter.org/github/bioasp/meneco/blob/master/meneco.ipynb).
-
 
 # Bibliography
 

@@ -32,17 +32,17 @@ minimal_completion_wb_prg = root + \
 completion_prg = root + '/encodings/completions_all_targets.lp'
 
 
-def get_unproducible(draft, seeds, targets):
-    draft_f = utils.to_file(draft)
+def get_unproducible(network, seeds, targets):
+    network_f = utils.to_file(network)
     seed_f = utils.to_file(seeds)
     target_f = utils.to_file(targets)
-    prg = [unproducible_prg, draft_f, seed_f, target_f]
+    prg = [unproducible_prg, network_f, seed_f, target_f]
     options = ''
     best_model = None
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
         best_model = model
-    os.unlink(draft_f)
+    os.unlink(network_f)
     os.unlink(seed_f)
     os.unlink(target_f)
     return best_model
