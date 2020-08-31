@@ -62,9 +62,7 @@ result = run_meneco(draftnet="toy/draft.sbml",
 
 The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True).
 
-## Usage as library
-
-For a guided example, see a demonstration [Notebook](https://colab.research.google.com/drive/170IQ8YV-J0R1GH6rsU2t8YUKOkApLeNF?usp=sharing).
+For a step by step demonstration on how to use meneco as a library, have a look at our notebooks [here](https://mybinder.org/v2/gh/bioasp/meneco/master?filepath=meneco.ipynb) or [here](https://colab.research.google.com/drive/170IQ8YV-J0R1GH6rsU2t8YUKOkApLeNF?usp=sharing).
 
 ## Bibliography
 
