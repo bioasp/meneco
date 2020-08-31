@@ -1,6 +1,6 @@
-[![PyPI version](https://img.shields.io/pypi/v/meneco.svg)](https://pypi.org/project/meneco/)
+# Meneco [![PyPI version](https://img.shields.io/pypi/v/meneco.svg)](https://pypi.org/project/meneco/)
 
-# Installation
+## Installation
 
 Requires **Python >= 3.6**
 
@@ -16,7 +16,7 @@ python setup.py install
 
 You should always use a virtual environment ([virtualenv](https://virtualenv.pypa.io/en/latest/), [virtualenv wrapper](https://virtualenvwrapper.readthedocs.io/en/latest/)) when using Python
 
-# Usage from console
+## Usage from console
 
 Typical usage is:
 
@@ -45,7 +45,7 @@ optional arguments:
   --json                produce JSON output
 ```
 
-# Calling Meneco from a python script
+## Calling Meneco from a python script
 
 You can use meneco from python by calling the command run_meneco() with the paths of files as input arguments and a boolean value for the enumeration (True for the enumeration, else False) :
 
@@ -62,11 +62,11 @@ result = run_meneco(draftnet="toy/draft.sbml",
 
 The output will be the set of unproducible targets, reconstructable targets, a dictionnary of essentials reactions for each target, one minimal solution, the set of reactions belonging to the intersection of solutions, the set of reactions belonging to the union of solutions and a list of lists corresponding to the reactions for each solution (if enumeration == True).
 
-# Usage Library
+## Usage as library
 
-For a guided example, see a demonstration IPython [Notebook](http://nbviewer.jupyter.org/github/bioasp/meneco/blob/master/meneco.ipynb).
+For a guided example, see a demonstration [Notebook](https://colab.research.google.com/drive/170IQ8YV-J0R1GH6rsU2t8YUKOkApLeNF?usp=sharing).
 
-# Bibliography
+## Bibliography
 
 Please cite the following paper when using Meneco:
 
@@ -80,7 +80,7 @@ A first application of the method was presented in:
 
 G. Collet et al., “Extending the Metabolic Network of Ectocarpus Siliculosus Using Answer Set Programming,” in LPNMR 2013: Logic Programming and Nonmonotonic Reasoning, 2013, pp. 245–256. [https://doi.org/10.1007/978-3-642-40564-8_25](https://doi.org/10.1007/978-3-642-40564-8_25)
 
-# Samples
+## Samples
 
 Sample files for the reconstruction of Ectocarpus are available here: [ectocyc.sbml][1], [metacyc_16-5.sbml][2], [seeds.sbml][3], [targets.sbml][4]
 
