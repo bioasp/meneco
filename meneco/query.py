@@ -120,6 +120,7 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
         str(optimum)
 
     models = clyngor.solve(prg, options=options)
+    best_model = None
     for model in models.discard_quotes.by_arity:
         best_model = model
 
