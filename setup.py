@@ -18,20 +18,20 @@
 from setuptools import setup
 
 setup(
-    name='Meneco',
-    version='2.0.1-dev',
-    url='http://bioasp.github.io/meneco/',
-    license='GPLv3+',
-    description='Metabolic Network Completion. Compute minimal completions '
-                        'to your draft network with reactions from a repair network.',
+    name="Meneco",
+    version="2.0.1-dev",
+    url="http://bioasp.github.io/meneco/",
+    license="GPLv3+",
+    description="Metabolic Network Completion. Compute minimal completions "
+    "to your draft network with reactions from a repair network.",
     long_description=open("README.md", encoding="utf8").read(),
     long_description_content_type="text/markdown",
-    author='Sven Thiele',
-    author_email='sthiele78@gmail.com',
-    packages=['meneco'],
-    package_dir={'meneco': 'meneco'},
-    package_data={'meneco': ['encodings/*.lp']},
+    author="Sven Thiele",
+    author_email="sthiele78@gmail.com",
+    packages=["meneco"],
+    package_dir={"meneco": "meneco"},
+    package_data={"meneco": ["encodings/*.lp"]},
     # scripts          = ['meneco.py'],
-    entry_points={'console_scripts': ['meneco = meneco.__main__:main_meneco']},
-    install_requires = ['clyngor_with_clingo']
+    entry_points={"console_scripts": ["meneco = meneco.__main__:main_meneco"]},
+    install_requires=["clyngor_with_clingo"],
 )
