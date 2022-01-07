@@ -24,7 +24,7 @@ setup(
     license='GPLv3+',
     description='Metabolic Network Completion. Compute minimal completions '
                         'to your draft network with reactions from a repair network.',
-    long_description=open('README.md').read(),
+    long_description=open("README.md", encoding="utf8").read(),
     long_description_content_type="text/markdown",
     author='Sven Thiele',
     author_email='sthiele78@gmail.com',
