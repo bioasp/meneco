@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v2.0.1-dev - 2022, ??? ?
+### Changed
+- ???
+
 ## v2.0.0 - 2020, Mar 5
 ### Changed
 - use clyngor_with_clingo instead pyasp-1.4.3
@@ -34,10 +38,9 @@ All notable changes to this project will be documented in this file.
 - use pyasp-1.3
 
 ##  Undocumented versions
-- v1.3.2 	
-- v1.3.1 	
-- v1.3 	
-- v1.2 	
-- v1.1 	
+- v1.3.2
+- v1.3.1
+- v1.3
+- v1.2
+- v1.1
 - v1.0dev
-
