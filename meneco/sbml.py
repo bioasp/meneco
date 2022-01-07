@@ -22,6 +22,7 @@ from clyngor.as_pyasp import TermSet, Atom
 import xml.etree.cElementTree as etree
 from xml.etree.cElementTree import XML, fromstring, tostring
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -123,32 +124,46 @@ def readSBMLnetwork(filename, name):
             tag = e.tag
         if tag == "reaction":
             reactionId = e.attrib.get("id")
-            lpfacts.add(
-                Atom('reaction', ["\""+reactionId+"\"", "\""+name+"\""]))
-            if(e.attrib.get("reversible") == "true"):
+            lpfacts.add(Atom("reaction", ['"' + reactionId + '"', '"' + name + '"']))
+            if e.attrib.get("reversible") == "true":
                 lpfacts.add(
-                    Atom('reversible', ["\""+reactionId+"\"", "\""+name+"\""]))
+                    Atom("reversible", ['"' + reactionId + '"', '"' + name + '"'])
+                )
 
             listOfReactants = get_listOfReactants(e)
             if listOfReactants == None:
-                logger.warning(
-                    "Warning: {0} listOfReactants=None".format(reactionId))
+                logger.warning("Warning: {0} listOfReactants=None".format(reactionId))
             else:
                 for r in listOfReactants:
-                    lpfacts.add(Atom('reactant', [
-                                "\""+r.attrib.get("species")+"\"", "\""+reactionId+"\"", "\""+name+"\""]))
+                    lpfacts.add(
+                        Atom(
+                            "reactant",
+                            [
+                                '"' + r.attrib.get("species") + '"',
+                                '"' + reactionId + '"',
+                                '"' + name + '"',
+                            ],
+                        )
+                    )
 
             listOfProducts = get_listOfProducts(e)
             if listOfProducts == None:
-                logger.warning(
-                    "Warning: {0} listOfProducts=None".format(reactionId))
+                logger.warning("Warning: {0} listOfProducts=None".format(reactionId))
             else:
                 for p in listOfProducts:
-                    lpfacts.add(Atom('product', [
-                                "\""+p.attrib.get("species")+"\"", "\""+reactionId+"\"", "\""+name+"\""]))
+                    lpfacts.add(
+                        Atom(
+                            "product",
+                            [
+                                '"' + p.attrib.get("species") + '"',
+                                '"' + reactionId + '"',
+                                '"' + name + '"',
+                            ],
+                        )
+                    )
 
-    if name == 'draft':
-        lpfacts.add(Atom('draft', ["\"" + name + "\""]))
+    if name == "draft":
+        lpfacts.add(Atom("draft", ['"' + name + '"']))
 
     return lpfacts
 
@@ -168,40 +183,54 @@ def readSBMLnetwork_with_score(filename, name):
             tag = e.tag
         if tag == "reaction":
             reactionId = e.attrib.get("id")
-            lpfacts.add(
-                Atom('reaction', ["\""+reactionId+"\"", "\""+name+"\""]))
-            if(e.attrib.get("reversible") == "true"):
+            lpfacts.add(Atom("reaction", ['"' + reactionId + '"', '"' + name + '"']))
+            if e.attrib.get("reversible") == "true":
                 lpfacts.add(
-                    Atom('reversible', ["\""+reactionId+"\"", "\""+name+"\""]))
+                    Atom("reversible", ['"' + reactionId + '"', '"' + name + '"'])
+                )
 
             listOfReactants = get_listOfReactants(e)
             if listOfReactants == None:
-                logger.warning(
-                    "Warning: {0} listOfReactants=None".format(reactionId))
+                logger.warning("Warning: {0} listOfReactants=None".format(reactionId))
             else:
                 for r in listOfReactants:
-                    lpfacts.add(Atom('reactant', [
-                                "\""+r.attrib.get("species")+"\"", "\""+reactionId+"\"", "\""+name+"\""]))
+                    lpfacts.add(
+                        Atom(
+                            "reactant",
+                            [
+                                '"' + r.attrib.get("species") + '"',
+                                '"' + reactionId + '"',
+                                '"' + name + '"',
+                            ],
+                        )
+                    )
 
             listOfProducts = get_listOfProducts(e)
             if listOfProducts == None:
-                logger.warning(
-                    "Warning: {0} listOfProducts=None".format(reactionId))
+                logger.warning("Warning: {0} listOfProducts=None".format(reactionId))
             else:
                 for p in listOfProducts:
-                    lpfacts.add(Atom('product', [
-                                "\""+p.attrib.get("species")+"\"", "\""+reactionId+"\"", "\""+name+"\""]))
+                    lpfacts.add(
+                        Atom(
+                            "product",
+                            [
+                                '"' + p.attrib.get("species") + '"',
+                                '"' + reactionId + '"',
+                                '"' + name + '"',
+                            ],
+                        )
+                    )
 
             score = get_score(e)
             if score != 0:
-                value = int(float(score)*1000)
-                lpfacts.add(Atom('value', ["\""+reactionId+"\"", str(value)]))
+                value = int(float(score) * 1000)
+                lpfacts.add(Atom("value", ['"' + reactionId + '"', str(value)]))
             else:
                 # print " no value for ",Reaction_ID
-                lpfacts.add(Atom('value', ["\""+reactionId+"\"", "0"]))
+                lpfacts.add(Atom("value", ['"' + reactionId + '"', "0"]))
 
-    if name == 'draft':
-        lpfacts.add(Atom('draft', ["\"" + name + "\""]))
+    if name == "draft":
+        lpfacts.add(Atom("draft", ['"' + name + '"']))
 
     return lpfacts
 
@@ -220,7 +249,7 @@ def readSBMLtargets(filename):
         else:
             tag = e.tag
         if tag == "species":
-            lpfacts.add(Atom('target', ["\""+e.attrib.get("id")+"\""]))
+            lpfacts.add(Atom("target", ['"' + e.attrib.get("id") + '"']))
     return lpfacts
 
 
@@ -237,5 +266,5 @@ def readSBMLseeds(filename):
         else:
             tag = e.tag
         if tag == "species":
-            lpfacts.add(Atom('seed', ["\""+e.attrib.get("id")+"\""]))
+            lpfacts.add(Atom("seed", ['"' + e.attrib.get("id") + '"']))
     return lpfacts

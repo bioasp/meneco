@@ -22,14 +22,15 @@ from clyngor.as_pyasp import TermSet, Atom
 from meneco import utils
 
 
-root = __file__.rsplit('/', 1)[0]
-unproducible_prg = root + '/encodings/unproducible_targets.lp'
-ireaction_prg = root + '/encodings/ireactions.lp'
-minimal_completion_prg = root + '/encodings/card_min_completions_all_targets.lp'
-heuristic_prg = root + '/encodings/heuristic.lp'
-minimal_completion_wb_prg = root + \
-    '/encodings/card_min_completions_all_targets_with_bounds.lp'
-completion_prg = root + '/encodings/completions_all_targets.lp'
+root = __file__.rsplit("/", 1)[0]
+unproducible_prg = root + "/encodings/unproducible_targets.lp"
+ireaction_prg = root + "/encodings/ireactions.lp"
+minimal_completion_prg = root + "/encodings/card_min_completions_all_targets.lp"
+heuristic_prg = root + "/encodings/heuristic.lp"
+minimal_completion_wb_prg = (
+    root + "/encodings/card_min_completions_all_targets_with_bounds.lp"
+)
+completion_prg = root + "/encodings/completions_all_targets.lp"
 
 
 def get_unproducible(network, seeds, targets):
@@ -37,7 +38,7 @@ def get_unproducible(network, seeds, targets):
     seed_f = utils.to_file(seeds)
     target_f = utils.to_file(targets)
     prg = [unproducible_prg, network_f, seed_f, target_f]
-    options = ''
+    options = ""
     best_model = None
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
@@ -60,10 +61,9 @@ def compute_ireactions(instance):
 
     output = TermSet()
     for pred in best_model:
-        if pred == 'ireaction':
+        if pred == "ireaction":
             for a in best_model[pred]:
-                output.add(
-                    Atom('ireaction("' + a[0] + '","' + a[1] + '")'))
+                output.add(Atom('ireaction("' + a[0] + '","' + a[1] + '")'))
 
     return output
 
@@ -97,8 +97,10 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
 
     prg = [minimal_completion_prg, instance_f]
 
-    options = '--configuration=jumpy --opt-strategy=usc,5 --enum-mode=cautious --opt-mode=optN,' + \
-        str(optimum)
+    options = (
+        "--configuration=jumpy --opt-strategy=usc,5 --enum-mode=cautious --opt-mode=optN,"
+        + str(optimum)
+    )
     best_model = None
     models = clyngor.solve(prg, options=options)
     for model in models.discard_quotes.by_arity:
@@ -116,8 +118,10 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
     instance_f = utils.to_file(instance)
     prg = [minimal_completion_prg, instance_f]
 
-    options = '--configuration jumpy --opt-strategy=usc,5 --enum-mode=brave --opt-mode=optN,' + \
-        str(optimum)
+    options = (
+        "--configuration jumpy --opt-strategy=usc,5 --enum-mode=brave --opt-mode=optN,"
+        + str(optimum)
+    )
 
     models = clyngor.solve(prg, options=options)
     best_model = None
@@ -137,11 +141,13 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
 
     prg = [minimal_completion_prg, instance_f]
 
-    options = '--configuration=handy --opt-strategy=usc,0 --opt-mode=optN,{0}'.format(
-        optimum)
+    options = "--configuration=handy --opt-strategy=usc,0 --opt-mode=optN,{0}".format(
+        optimum
+    )
 
-    models = clyngor.solve(prg, options=options,
-                           nb_model=nmodels).by_arity.discard_quotes
+    models = clyngor.solve(
+        prg, options=options, nb_model=nmodels
+    ).by_arity.discard_quotes
     opt_models = clyngor.opt_models_from_clyngor_answers(models)
 
     return opt_models
@@ -158,7 +164,7 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
         instance_f = utils.to_file(instance)
 
         prg = [completion_prg, instance_f]
-        options = '--enum-mode=cautious --opt-mode=ignore '
+        options = "--enum-mode=cautious --opt-mode=ignore "
 
         best_model = None
         models = clyngor.solve(prg, options=options)

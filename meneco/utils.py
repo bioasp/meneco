@@ -42,11 +42,11 @@ def to_file(termset, outputfile=None):
         outputfile (str, optional): Defaults to None. name of the output file
     """
     if outputfile:
-        f = open(outputfile, 'a')
+        f = open(outputfile, "a")
     else:
-        fd, outputfile = tempfile.mkstemp(suffix='.lp', prefix='meneco_')
-        f = os.fdopen(fd, 'a')
+        fd, outputfile = tempfile.mkstemp(suffix=".lp", prefix="meneco_")
+        f = os.fdopen(fd, "a")
     for t in termset:
-        f.write(str(t) + '.\n')
+        f.write(str(t) + ".\n")
     f.close()
     return outputfile
