@@ -40,7 +40,7 @@ def get_unproducible(network, seeds, targets):
     prg = [unproducible_prg, network_f, seed_f, target_f]
     options = ""
     best_model = None
-    models = clyngor.solve(prg, options=options)
+    models = clyngor.solve(prg, options=options, use_clingo_module=False)
     for model in models.discard_quotes.by_arity:
         best_model = model
     os.unlink(network_f)
@@ -54,7 +54,7 @@ def compute_ireactions(instance):
     prg = [ireaction_prg, instance_f]
     best_model = None
 
-    models = clyngor.solve(prg)
+    models = clyngor.solve(prg, use_clingo_module=False)
     for model in models.discard_quotes.by_arity:
         best_model = model
     os.unlink(instance_f)
@@ -80,7 +80,7 @@ def get_minimal_completion_size(draft, repairnet, seeds, targets):
     co = "--configuration=jumpy --opt-strategy=usc,5"
 
     optimum = None
-    models = clyngor.solve(prg, options=co)
+    models = clyngor.solve(prg, options=co, use_clingo_module=False)
     for model in models.discard_quotes.by_arity:
         optimum = model
 
@@ -102,7 +102,7 @@ def get_intersection_of_optimal_completions(draft, repairnet, seeds, targets, op
         + str(optimum)
     )
     best_model = None
-    models = clyngor.solve(prg, options=options)
+    models = clyngor.solve(prg, options=options, use_clingo_module=False)
     for model in models.discard_quotes.by_arity:
         best_model = model
 
@@ -123,7 +123,7 @@ def get_union_of_optimal_completions(draft, repairnet, seeds, targets, optimum):
         + str(optimum)
     )
 
-    models = clyngor.solve(prg, options=options)
+    models = clyngor.solve(prg, options=options, use_clingo_module=False)
     best_model = None
     for model in models.discard_quotes.by_arity:
         best_model = model
@@ -146,7 +146,7 @@ def get_optimal_completions(draft, repairnet, seeds, targets, optimum, nmodels=0
     )
 
     models = clyngor.solve(
-        prg, options=options, nb_model=nmodels
+        prg, options=options, nb_model=nmodels, use_clingo_module=False
     ).by_arity.discard_quotes
     opt_models = clyngor.opt_models_from_clyngor_answers(models)
 
@@ -167,7 +167,7 @@ def get_intersection_of_completions(draft, repairnet, seeds, targets):
         options = "--enum-mode=cautious --opt-mode=ignore "
 
         best_model = None
-        models = clyngor.solve(prg, options=options)
+        models = clyngor.solve(prg, options=options, use_clingo_module=False)
         for model in models.discard_quotes.by_arity:
             best_model = model
 
