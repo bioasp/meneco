@@ -141,8 +141,8 @@ def run_meneco(
     result["Unproducible targets"] = list(unproducible_targets_lst)
     if not json:
         print(
-            "{0} unproducible targets:\n\t{1}\n".format(
-                len(unproducible_targets_lst), "\n\t".join(unproducible_targets_lst)
+            "{0} unproducible targets:\n    {1}\n".format(
+                len(unproducible_targets_lst), "\n    ".join(unproducible_targets_lst)
             )
         )
 
@@ -170,8 +170,8 @@ def run_meneco(
     result["Unreconstructable targets"] = list(never_producible)
     if not json:
         print(
-            "Still {0} unreconstructable targets:\n\t{1}\n".format(
-                len(never_producible), "\n\t".join(never_producible)
+            "Still {0} unreconstructable targets:\n    {1}\n".format(
+                len(never_producible), "\n    ".join(never_producible)
             )
         )
 
@@ -185,8 +185,8 @@ def run_meneco(
     result["Reconstructable targets"] = list(reconstructable_targets)
     if not json:
         print(
-            "{0} reconstructable targets:\n\t{1}\n".format(
-                len(reconstructable_targets), "\n\t".join(reconstructable_targets)
+            "{0} reconstructable targets:\n    {1}\n".format(
+                len(reconstructable_targets), "\n    ".join(reconstructable_targets)
             )
         )
 
@@ -210,8 +210,8 @@ def run_meneco(
         essential_reactions_target[t] = list(essentials_to_print)
         if not json:
             print(
-                "{0} essential reactions for target {1}:\n\t{2}\n".format(
-                    len(essentials_to_print), t, "\n\t".join(essentials_to_print)
+                "{0} essential reactions for target {1}:\n    {2}\n".format(
+                    len(essentials_to_print), t, "\n    ".join(essentials_to_print)
                 )
             )
 
@@ -223,9 +223,9 @@ def run_meneco(
     result["Essential reactions"] = essential_reactions_target
     if not json:
         print(
-            "Overall {0} essential reactions found:\n\t{1}\n".format(
+            "Overall {0} essential reactions found:\n    {1}\n".format(
                 len(essential_reactions_to_print),
-                "\n\t".join(essential_reactions_to_print),
+                "\n    ".join(essential_reactions_to_print),
             )
         )
 
@@ -250,8 +250,8 @@ def run_meneco(
     result["One minimal completion"] = list(one_min_sol_lst)
     if not json:
         print(
-            "One minimal completion of size {0}:\n\t{1}\n".format(
-                len(one_min_sol_lst), "\n\t".join(one_min_sol_lst)
+            "One minimal completion of size {0}:\n    {1}\n".format(
+                len(one_min_sol_lst), "\n    ".join(one_min_sol_lst)
             )
         )
 
@@ -269,8 +269,8 @@ def run_meneco(
     )
     if not json:
         print(
-            "Intersection of cardinality minimal completions:\n\t{0}\n".format(
-                "\n\t".join(intersection_sol_lst)
+            "Intersection of cardinality minimal completions:\n    {0}\n".format(
+                "\n    ".join(intersection_sol_lst)
             )
         )
 
@@ -286,8 +286,8 @@ def run_meneco(
     result["Union of cardinality minimal completions"] = list(union_sol_lst)
     if not json:
         print(
-            "Union of cardinality minimal completions:\n\t{0}\n".format(
-                "\n\t".join(union_sol_lst)
+            "Union of cardinality minimal completions:\n    {0}\n".format(
+                "\n    ".join(union_sol_lst)
             )
         )
 
@@ -303,7 +303,7 @@ def run_meneco(
             enumeration_sol_lst.append(list(model_lst))
 
             if not json:
-                print("Completion {0}:\n\t{1}\n".format(count, "\n\t".join(model_lst)))
+                print("Completion {0}:\n    {1}\n".format(count, "\n    ".join(model_lst)))
             count += 1
         result["All cardinality minimal completions"] = enumeration_sol_lst
 
