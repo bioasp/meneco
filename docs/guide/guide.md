@@ -1,4 +1,4 @@
-# **Meneco** User Guide (version 2.0.1-dev)
+# **Meneco** User Guide (version 2.0.1)
 
 Sven Thiele
 
@@ -207,34 +207,34 @@ and to specify the seeds and targets.
 
 ```text
 7 unproducible targets:
-        M_so4_c
-        M_cl_c
-        M_cu2_c
-        M_pe161_c
-        M_thf_c
-        M_ribflv_c
-        M_utp_c
+    M_so4_c
+    M_cl_c
+    M_cu2_c
+    M_pe161_c
+    M_thf_c
+    M_ribflv_c
+    M_utp_c
 ```
 
 In this section Meneco outputs which target metabolite are producible given the seeds and the reactions of the draft network.
 In this case the result shows 7 target metabolites which are not producible.
 
-Given that unproducible target metabolites exist the next sections documents which of the targets remain unproducible even with the reactions from the repair database `repairdb.sbml` 
+Given that unproducible target metabolites exist the next sections documents which of the targets remain unproducible even with the reactions from the repair database `repairdb.sbml`
 and for which targets the metabolic pathways can be reconstructed.
 
 ```text
 Repair db file: repairdb.sbml
 
 Still 5 unreconstructable targets:
-        M_so4_c
-        M_pe161_c
-        M_utp_c
-        M_ribflv_c
-        M_thf_c
+    M_so4_c
+    M_pe161_c
+    M_utp_c
+    M_ribflv_c
+    M_thf_c
 
 2 reconstructable targets:
-        M_cu2_c
-        M_cl_c
+    M_cu2_c
+    M_cl_c
 ```
 
 In this example 5 metabolites remain unproducible,
@@ -246,14 +246,14 @@ This intermediate result is reused in the subsequent computations as a solution 
 
 ```text
 1 essential reactions for target M_cu2_c:
-        R_CU2tpp
+    R_CU2tpp
 
 1 essential reactions for target M_cl_c:
-        R_CLt3_2pp
+    R_CLt3_2pp
 
 Overall 2 essential reactions found:
-        R_CU2tpp
-        R_CLt3_2pp
+    R_CU2tpp
+    R_CLt3_2pp
 ```
 
 In this example for each single target metabolite exist one essential reaction.
@@ -262,9 +262,9 @@ The section shows one minimal completion to produce all targets.
 
 ```text
 One minimal completion of size 3:
-        R_O2Stex
-        R_CU2tpp
-        R_CLt3_2pp
+    R_O2Stex
+    R_CU2tpp
+    R_CLt3_2pp
 ```
 
 In this example the first minimal completion contains 3 reactions.
@@ -274,14 +274,14 @@ Meneco outputs the intersection and union of all minimal completion
 
 ```text
 Intersection of cardinality minimal completions:
-        R_CU2tpp
-        R_CLt3_2pp
+    R_CU2tpp
+    R_CLt3_2pp
 
 Union of cardinality minimal completions:
-        R_O2tex
-        R_O2Stex
-        R_CU2tpp
-        R_CLt3_2pp
+    R_O2tex
+    R_O2Stex
+    R_CU2tpp
+    R_CLt3_2pp
 ```
 
 In our case we get 2 reactions in the intersection and 4 reactions in the union.
@@ -291,15 +291,14 @@ all minimal completions are enumerated.
 
 ```text
 Completion 1:
-        R_O2Stex
-        R_CU2tpp
-        R_CLt3_2pp
+    R_O2Stex
+    R_CU2tpp
+    R_CLt3_2pp
 
 Completion 2:
-        R_O2tex
-        R_CU2tpp
-        R_CLt3_2pp
-
+    R_O2tex
+    R_CU2tpp
+    R_CLt3_2pp
 ```
 
 Fortunately, our example has only two solutions.
