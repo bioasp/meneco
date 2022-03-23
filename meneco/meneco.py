@@ -275,7 +275,9 @@ def run_meneco(
         )
 
     logger.info(
-        "Computing union of reactions from all completion with size {0} ...".format(optimum)
+        "Computing union of reactions from all completion with size {0} ...".format(
+            optimum
+        )
     )
     union_sol = query.get_union_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
@@ -303,7 +305,9 @@ def run_meneco(
             enumeration_sol_lst.append(list(model_lst))
 
             if not json:
-                print("Completion {0}:\n    {1}\n".format(count, "\n    ".join(model_lst)))
+                print(
+                    "Completion {0}:\n    {1}\n".format(count, "\n    ".join(model_lst))
+                )
             count += 1
         result["All cardinality minimal completions"] = enumeration_sol_lst
 
