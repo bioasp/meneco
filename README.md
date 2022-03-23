@@ -2,7 +2,7 @@
 
 ## Installation
 
-Requires **Python >= 3.6**
+Requires **Python >= 3.7**
 
 Required packages (starting from version 2.0 of the package):
 
