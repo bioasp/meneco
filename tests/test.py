@@ -59,7 +59,7 @@ def test_meneco():
     # print(unproducible_targets_result, reconstructable_result, one_min_sol_result)
     # print(union_sol_result, intersection_sol_result, enumeration_sol_result)
     # print(union_sol_lst, intersection_sol_lst, enumeration_sol_lst)
-    assert len(unproducible_targets) == len(result["Unproducible targets"])
+    assert set(unproducible_targets) == set(result["Unproducible targets"])
     assert reconstructable_sol == set(result["Reconstructable targets"])
     assert one_min_sol == set(result["One minimal completion"])
     assert union_sol == set(result["Union of cardinality minimal completions"])
