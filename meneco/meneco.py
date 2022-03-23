@@ -133,7 +133,7 @@ def run_meneco(
     targets = sbml.readSBMLtargets(targets)
     # targets.to_file("targets.lp")
 
-    logger.info("Checking draftnet for unproducible targets")
+    logger.info("Checking draftnet for unproducible targets ...")
     model = query.get_unproducible(draftnet, seeds, targets)
 
     unproducible_targets_lst = extract_unprod_target(model)
@@ -163,7 +163,7 @@ def run_meneco(
 
     all_reactions = draftnet
     all_reactions = TermSet(all_reactions.union(repairnet))
-    logger.info("Checking draftnet + repairnet for unproducible targets")
+    logger.info("Checking draftnet + repairnet for unproducible targets ...")
     model = query.get_unproducible(all_reactions, seeds, targets)
     never_producible = extract_unprod_target(model)
 
@@ -200,7 +200,7 @@ def run_meneco(
     for t in reconstructable_targets:
         single_target = TermSet()
         single_target.add(Atom('target("' + t + '")'))
-        logger.info("Computing essential reactions for " + t)
+        logger.info(f"Computing essential reactions for {t} ...")
         essentials = query.get_intersection_of_completions(
             draftnet, repairnet, seeds, single_target
         )
@@ -229,7 +229,7 @@ def run_meneco(
             )
         )
 
-    logger.info("Adding essential reactions to network")
+    logger.info("Adding essential reactions to network!")
     draftnet = TermSet(draftnet.union(essential_reactions))
 
     utils.clean_up()
@@ -239,7 +239,7 @@ def run_meneco(
     # unproducible_targets.to_file("targets.lp")
     # seeds.to_file("seeds.lp")
 
-    logger.info("Computing one minimal completion to produce all targets")
+    logger.info("Computing one minimal completion to produce all targets ...")
     one_min_sol = query.get_minimal_completion_size(
         draftnet, repairnet, seeds, reconstructable_targets_atoms
     )
@@ -256,7 +256,7 @@ def run_meneco(
         )
 
     logger.info(
-        "Computing common reactions in all completion with size {0}".format(optimum)
+        "Computing common reactions in all completion with size {0} ...".format(optimum)
     )
     intersection_sol = query.get_intersection_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
@@ -275,7 +275,7 @@ def run_meneco(
         )
 
     logger.info(
-        "Computing union of reactions from all completion with size {0}".format(optimum)
+        "Computing union of reactions from all completion with size {0} ...".format(optimum)
     )
     union_sol = query.get_union_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
@@ -292,7 +292,7 @@ def run_meneco(
         )
 
     if enumeration:
-        logger.info("Computing all completions with size {0}".format(optimum))
+        logger.info("Computing all completions with size {0} ...".format(optimum))
         enumeration_sol = query.get_optimal_completions(
             draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
         )
