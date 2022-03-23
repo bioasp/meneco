@@ -1,9 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## v2.0.1-dev - 2022, ??? ?
+## v2.0.1 - 2022, Mar 23
 ### Changed
-- ???
+- fix regression in clyngor_with_clingo
+- requires Python >= 3.7
 
 ## v2.0.0 - 2020, Mar 5
 ### Changed
