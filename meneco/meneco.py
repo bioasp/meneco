@@ -15,13 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
-# -*- coding: utf-8 -*-
-from clyngor.as_pyasp import TermSet, Atom
+
 import argparse
-import sys
 import json
 import logging
-from meneco import utils, sbml, query
+import sys
+
+from clyngor.as_pyasp import Atom, TermSet
+
+from meneco import query, sbml, utils
 
 logger = logging.getLogger(__name__)
 
@@ -278,9 +280,7 @@ def run_meneco(
         intersection_sol_lst
     )
     if not json_output:
-        print(
-            f"Intersection of cardinality minimal completions"
-        )
+        print("Intersection of cardinality minimal completions")
         if len(intersection_sol_lst) > 0 :
             print("    {0}\n".format("\n    ".join(intersection_sol_lst)))
         else: print("    is empty")
@@ -297,9 +297,7 @@ def run_meneco(
 
     result["Union of cardinality minimal completions"] = union_sol_lst
     if not json_output:
-        print(
-            f"Union of cardinality minimal completions"
-        )
+        print("Union of cardinality minimal completions")
         if len(union_sol_lst) > 0 :
             print("    {0}\n".format("\n    ".join(union_sol_lst)))
         else: print("    is empty")
