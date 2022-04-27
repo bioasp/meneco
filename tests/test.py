@@ -1,6 +1,6 @@
-from meneco import meneco
-import subprocess
 import sys
+
+from meneco import meneco
 
 sys.path.append("../")
 
@@ -12,7 +12,7 @@ def test_meneco():
         "../toy/targets.sbml",
         "../toy/repair.sbml",
         True,
-        json=True,
+        json_output=True,
     )
 
     unproducible_targets = [
