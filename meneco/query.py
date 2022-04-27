@@ -14,13 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
-# -*- coding: utf-8 -*-
-import os
-import clyngor
-from clyngor import as_pyasp
-from clyngor.as_pyasp import TermSet, Atom
-from meneco import utils
 
+import os
+
+import clyngor
+from clyngor.as_pyasp import Atom, TermSet
+
+from meneco import utils
 
 root = __file__.rsplit("/", 1)[0]
 unproducible_prg = root + "/encodings/unproducible_targets.lp"

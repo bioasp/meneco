@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 
-# -*- coding: utf-8 -*-
-from clyngor.as_pyasp import TermSet, Atom
-import xml.etree.cElementTree as etree
 import logging
+import xml.etree.cElementTree as etree
+
+from clyngor.as_pyasp import Atom, TermSet
 
 logger = logging.getLogger(__name__)
 
