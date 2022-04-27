@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.2-dev - 2022, Apr 28
+
+**Changed:**
+
+- fix slow reading of SBML files
+
 ## v2.0.1 - 2022, Mar 23
 
 **Changed:**
