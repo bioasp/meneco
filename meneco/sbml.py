@@ -16,11 +16,8 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 
 # -*- coding: utf-8 -*-
-import re
-from clyngor import as_pyasp
 from clyngor.as_pyasp import TermSet, Atom
 import xml.etree.cElementTree as etree
-from xml.etree.cElementTree import XML, fromstring, tostring
 import logging
 
 logger = logging.getLogger(__name__)
@@ -111,7 +108,7 @@ def get_score(reaction):
 
 def readSBMLnetwork(filename, name):
 
-    lpfacts = TermSet()
+    lpfacts = set()
     tree = etree.parse(filename)
     sbml = tree.getroot()
     model = get_model(sbml)
@@ -165,12 +162,12 @@ def readSBMLnetwork(filename, name):
     if name == "draft":
         lpfacts.add(Atom("draft", ['"' + name + '"']))
 
-    return lpfacts
+    return TermSet(lpfacts)
 
 
 def readSBMLnetwork_with_score(filename, name):
 
-    lpfacts = TermSet()
+    lpfacts = set()
     tree = etree.parse(filename)
     sbml = tree.getroot()
     model = get_model(sbml)
@@ -232,12 +229,12 @@ def readSBMLnetwork_with_score(filename, name):
     if name == "draft":
         lpfacts.add(Atom("draft", ['"' + name + '"']))
 
-    return lpfacts
+    return TermSet(lpfacts)
 
 
 def readSBMLtargets(filename):
 
-    lpfacts = TermSet()
+    lpfacts = set()
     tree = etree.parse(filename)
     sbml = tree.getroot()
     model = get_model(sbml)
@@ -250,11 +247,11 @@ def readSBMLtargets(filename):
             tag = e.tag
         if tag == "species":
             lpfacts.add(Atom("target", ['"' + e.attrib.get("id") + '"']))
-    return lpfacts
+    return TermSet(lpfacts)
 
 
 def readSBMLseeds(filename):
-    lpfacts = TermSet()
+    lpfacts = set()
     tree = etree.parse(filename)
     sbml = tree.getroot()
     model = get_model(sbml)
@@ -267,4 +264,4 @@ def readSBMLseeds(filename):
             tag = e.tag
         if tag == "species":
             lpfacts.add(Atom("seed", ['"' + e.attrib.get("id") + '"']))
-    return lpfacts
+    return TermSet(lpfacts)
