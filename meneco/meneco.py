@@ -17,8 +17,6 @@
 # along with meneco.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 from clyngor.as_pyasp import TermSet, Atom
-from clyngor import as_pyasp
-import clyngor
 import argparse
 import sys
 import json

@@ -59,13 +59,13 @@ def compute_ireactions(instance):
         best_model = model
     os.unlink(instance_f)
 
-    output = TermSet()
+    output = set()
     for pred in best_model:
         if pred == "ireaction":
             for a in best_model[pred]:
                 output.add(Atom('ireaction("' + a[0] + '","' + a[1] + '")'))
 
-    return output
+    return TermSet(output)
 
 
 def get_minimal_completion_size(draft, repairnet, seeds, targets):
