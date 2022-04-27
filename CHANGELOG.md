@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## v2.0.2-dev - 2022, Apr 28
+## v2.0.2 - 2022, Apr 28
 
 **Changed:**
 

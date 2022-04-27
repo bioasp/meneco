@@ -1,4 +1,4 @@
-# **Meneco** User Guide (version 2.0.2-dev)
+# **Meneco** User Guide (version 2.0.2)
 
 Sven Thiele
 
