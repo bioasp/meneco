@@ -98,7 +98,7 @@ def run_meneco(
     targets: str,
     repairnet: str,
     enumeration: bool,
-    json: bool,
+    json_output: bool,
 ):
     """Complete metabolic network by selecting reactions from a database
 
@@ -112,21 +112,21 @@ def run_meneco(
 
     logger.info("Reading draft network ...")
     result["Draft network file"] = draftnet
-    if not json:
-        print("Draft network file: {0}".format(draftnet))
+    if not json_output:
+        print(f"Draft network file: {draftnet}")
     draftnet = sbml.readSBMLnetwork(draftnet, "draft")
     # draftnet.to_file("draftnet.lp")
 
     logger.info("Reading seeds ...")
     result["Seeds file"] = seeds
-    if not json:
-        print("Seeds file: {0}".format(seeds))
+    if not json_output:
+        print(f"Seeds file: {seeds}")
     seeds = sbml.readSBMLseeds(seeds)
     # seeds.to_file("seeds.lp")
 
     logger.info("Reading targets ...")
     result["Targets file"] = targets
-    if not json:
+    if not json_output:
         print("Targets file: {0}\n".format(targets))
     targets = sbml.readSBMLtargets(targets)
     # targets.to_file("targets.lp")
@@ -134,28 +134,31 @@ def run_meneco(
     logger.info("Checking draftnet for unproducible targets ...")
     model = query.get_unproducible(draftnet, seeds, targets)
 
-    unproducible_targets_lst = extract_unprod_target(model)
+    unproducible_targets_lst = list(extract_unprod_target(model))
+    unproducible_targets_lst.sort()
 
-    result["Unproducible targets"] = list(unproducible_targets_lst)
-    if not json:
+    result["Unproducible targets"] = unproducible_targets_lst
+    if not json_output:
         print(
-            "{0} unproducible targets:\n    {1}\n".format(
-                len(unproducible_targets_lst), "\n    ".join(unproducible_targets_lst)
-            )
+            f"{len(unproducible_targets_lst)} unproducible targets"
         )
+        if len(unproducible_targets_lst) > 0 :
+            print("    {0}\n".format("\n    ".join(unproducible_targets_lst)))
+        else: print()
+
 
     if len(unproducible_targets_lst) == 0:
         utils.clean_up()
         return result
 
-    if repairnet == None:
+    if repairnet is None:
         utils.clean_up()
         return result
 
     logger.info("Reading repair db ...")
     result["Repair db file"] = repairnet
-    if not json:
-        print("Repair db file: {0}\n".format(repairnet))
+    if not json_output:
+        print(f"Repair db file: {repairnet}\n")
     repairnet = sbml.readSBMLnetwork(repairnet, "repairnet")
     # repairnet.to_file("repairnet.lp")
 
@@ -163,15 +166,17 @@ def run_meneco(
     all_reactions = TermSet(all_reactions.union(repairnet))
     logger.info("Checking draftnet + repairnet for unproducible targets ...")
     model = query.get_unproducible(all_reactions, seeds, targets)
-    never_producible = extract_unprod_target(model)
+    never_producible = list(extract_unprod_target(model))
+    never_producible.sort()
 
-    result["Unreconstructable targets"] = list(never_producible)
-    if not json:
+    result["Unreconstructable targets"] = never_producible
+    if not json_output:
         print(
-            "Still {0} unreconstructable targets:\n    {1}\n".format(
-                len(never_producible), "\n    ".join(never_producible)
-            )
+            f"{len(never_producible)} unreconstructable targets"
         )
+        if len(never_producible) > 0 :
+            print("    {0}\n".format("\n    ".join(never_producible)))
+        else: print()
 
     reconstructable_targets = set()
     reconstructable_targets_atoms = TermSet()
@@ -180,13 +185,16 @@ def run_meneco(
             reconstructable_targets.add(t)
             reconstructable_targets_atoms.add(Atom('target("' + t + '")'))
 
-    result["Reconstructable targets"] = list(reconstructable_targets)
-    if not json:
+    reconstructable_targets = list(reconstructable_targets)
+    reconstructable_targets.sort()
+    result["Reconstructable targets"] = reconstructable_targets
+    if not json_output:
         print(
-            "{0} reconstructable targets:\n    {1}\n".format(
-                len(reconstructable_targets), "\n    ".join(reconstructable_targets)
-            )
+            f"{len(reconstructable_targets)} reconstructable targets"
         )
+        if len(reconstructable_targets) > 0 :
+            print("    {0}\n".format("\n    ".join(reconstructable_targets)))
+        else: print()
 
     if len(reconstructable_targets) == 0:
         utils.clean_up()
@@ -204,14 +212,16 @@ def run_meneco(
         )
 
         essentials_to_print, essentials_atoms = extract_xreactions(essentials, True)
-
-        essential_reactions_target[t] = list(essentials_to_print)
-        if not json:
+        essentials_to_print = list(essentials_to_print)
+        essentials_to_print.sort()
+        essential_reactions_target[t] = essentials_to_print
+        if not json_output:
             print(
-                "{0} essential reactions for target {1}:\n    {2}\n".format(
-                    len(essentials_to_print), t, "\n    ".join(essentials_to_print)
-                )
+                f"{len(essentials_to_print)} essential reactions for target {t}"
             )
+            if len(essentials_to_print) > 0 :
+                print("    {0}\n".format("\n    ".join(essentials_to_print)))
+            else: print()
 
         essential_reactions = TermSet(essential_reactions.union(essentials_atoms))
         essential_reactions_to_print = set(
@@ -219,13 +229,13 @@ def run_meneco(
         )
 
     result["Essential reactions"] = essential_reactions_target
-    if not json:
+    if not json_output:
         print(
-            "Overall {0} essential reactions found:\n    {1}\n".format(
-                len(essential_reactions_to_print),
-                "\n    ".join(essential_reactions_to_print),
-            )
+            f"Overall {len(essential_reactions_to_print)} essential reactions found"
         )
+        if len(essential_reactions_to_print) > 0 :
+            print("    {0}\n".format("\n    ".join(essential_reactions_to_print)))
+        else: print()
 
     logger.info("Adding essential reactions to network!")
     draftnet = TermSet(draftnet.union(essential_reactions))
@@ -242,57 +252,60 @@ def run_meneco(
         draftnet, repairnet, seeds, reconstructable_targets_atoms
     )
 
-    one_min_sol_lst = extract_xreactions(one_min_sol, False)
+    one_min_sol_lst = list(extract_xreactions(one_min_sol, False))
+    one_min_sol_lst.sort()
     optimum = len(one_min_sol_lst)
 
-    result["One minimal completion"] = list(one_min_sol_lst)
-    if not json:
+    result["One minimal completion"] = one_min_sol_lst
+    if not json_output:
         print(
-            "One minimal completion of size {0}:\n    {1}\n".format(
-                len(one_min_sol_lst), "\n    ".join(one_min_sol_lst)
-            )
+            f"One minimal completion of size {len(one_min_sol_lst)}"
         )
+        if len(one_min_sol_lst) > 0 :
+            print("    {0}\n".format("\n    ".join(one_min_sol_lst)))
+        else: print()
 
     logger.info(
-        "Computing common reactions in all completion with size {0} ...".format(optimum)
+        f"Computing common reactions in all completion with size {optimum} ..."
     )
     intersection_sol = query.get_intersection_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
     )
 
-    intersection_sol_lst = extract_xreactions(intersection_sol, False)
-
+    intersection_sol_lst = list(extract_xreactions(intersection_sol, False))
+    intersection_sol_lst.sort()
     result["Intersection of cardinality minimal completions"] = list(
         intersection_sol_lst
     )
-    if not json:
+    if not json_output:
         print(
-            "Intersection of cardinality minimal completions:\n    {0}\n".format(
-                "\n    ".join(intersection_sol_lst)
-            )
+            f"Intersection of cardinality minimal completions"
         )
+        if len(intersection_sol_lst) > 0 :
+            print("    {0}\n".format("\n    ".join(intersection_sol_lst)))
+        else: print("    is empty")
 
     logger.info(
-        "Computing union of reactions from all completion with size {0} ...".format(
-            optimum
-        )
+        f"Computing union of reactions from all completion with size {optimum} ..."
     )
     union_sol = query.get_union_of_optimal_completions(
         draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
     )
 
-    union_sol_lst = extract_xreactions(union_sol, False)
+    union_sol_lst = list(extract_xreactions(union_sol, False))
+    union_sol_lst.sort()
 
-    result["Union of cardinality minimal completions"] = list(union_sol_lst)
-    if not json:
+    result["Union of cardinality minimal completions"] = union_sol_lst
+    if not json_output:
         print(
-            "Union of cardinality minimal completions:\n    {0}\n".format(
-                "\n    ".join(union_sol_lst)
-            )
+            f"Union of cardinality minimal completions"
         )
+        if len(union_sol_lst) > 0 :
+            print("    {0}\n".format("\n    ".join(union_sol_lst)))
+        else: print("    is empty")
 
     if enumeration:
-        logger.info("Computing all completions with size {0} ...".format(optimum))
+        logger.info(f"Computing all completions with size {optimum} ...")
         enumeration_sol = query.get_optimal_completions(
             draftnet, repairnet, seeds, reconstructable_targets_atoms, optimum
         )
@@ -302,7 +315,7 @@ def run_meneco(
             model_lst = extract_xreactions(model, False)
             enumeration_sol_lst.append(list(model_lst))
 
-            if not json:
+            if not json_output:
                 print(
                     "Completion {0}:\n    {1}\n".format(count, "\n    ".join(model_lst))
                 )
