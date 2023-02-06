@@ -23,15 +23,14 @@ from clyngor.as_pyasp import Atom, TermSet
 from meneco import utils
 from meneco.config import get_config_options
 
-root = __file__.rsplit("/", 1)[0]
-unproducible_prg = root + "/encodings/unproducible_targets.lp"
-ireaction_prg = root + "/encodings/ireactions.lp"
-minimal_completion_prg = root + "/encodings/card_min_completions_all_targets.lp"
-heuristic_prg = root + "/encodings/heuristic.lp"
-minimal_completion_wb_prg = (
-    root + "/encodings/card_min_completions_all_targets_with_bounds.lp"
-)
-completion_prg = root + "/encodings/completions_all_targets.lp"
+root = os.path.dirname(__file__)
+encodings = os.path.join(root,"encodings")
+unproducible_prg = os.path.join(encodings,"unproducible_targets.lp")
+ireaction_prg = os.path.join(encodings, "ireactions.lp")
+minimal_completion_prg = os.path.join(encodings, "card_min_completions_all_targets.lp")
+heuristic_prg = os.path.join(encodings, "heuristic.lp")
+minimal_completion_wb_prg = os.path.join(encodings, "card_min_completions_all_targets_with_bounds.lp")
+completion_prg = os.path.join(encodings, "completions_all_targets.lp")
 
 def get_unproducible(network, seeds, targets):
     network_f = utils.to_file(network)
