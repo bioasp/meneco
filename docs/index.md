@@ -8,15 +8,13 @@ tagline: A tool for the completion of metabolic networks
 
 Large-scale metabolic networks as well as measured data sets suffer from substantial incompleteness.
 Meneco is a tool for metabolic network completion.
-It can be used to check whether a network provides the synthesis routes to comply with the required functionality described by the producibility of metabolites.
+It can be used to test whether a network can synthesize so called target metabolites from a set of seed metabolites.
+Meneco identifies unproducible targets and can attempt to complete missing synthesis routes by extending the metabolic network with reactions from a reference database such that the resulting network satisfies the producibility constraints.
 
-In particular, it tests whether it is possible to synthesize so called target metabolites from a set of seed metabolites.
-For networks that fail this test Meneco can attempt to complete the network by importing reactions from a metabolic reference database such that the resulting network provides the required functionality.
+While Meneco can be used to enumerate all minimal extensions, it can also compute the union and intersection of all minimal networks extensions without enumerating all minimal network extensions.
 
-Meneco can identify unproducible target metabolites and computes minimal extensions to the network that satisfy the producibility constraints.
-Additionally, it can compute the union and intersection of all minimal networks extensions without enumerating all minimal network extensions. Meneco builds upon a formal method for analyzing large-scale metabolic networks.
-This qualitative approach describes the bio-synthetic capacities of metabolic networks.
-Implementing this approach, Meneco maps its principles into Answer Set Programming to express the producibility constraints for a set of metabolites.
+The methods implemented in Meneco are based on a formal description of the qualitative bio-synthetic capacities of metabolic networks.
+Menoco uses Answer Set Programming to express the principles of this formalism and thus the producibility constraints for a set of metabolic reactions.
 
 ## Installation
 
